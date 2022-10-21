@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'application'
+}
+
+
+dependencies {
+    implementation project(':backend')
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'edu.bbte.idde.vlim2099'
+            artifactId = 'vlim2099-desktop'
+            version = '1.0.0-SNAPSHOT'
+
+            from components.java
+        }
+    }
+}
+
+application {
+    mainClassName = 'edu.bbte.idde.vlim2099.desktop.Main'
+}
