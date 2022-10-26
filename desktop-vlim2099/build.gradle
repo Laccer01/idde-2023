@@ -1,12 +1,8 @@
 plugins {
-    id 'java'
-    id 'maven-publish'
     id 'application'
 }
-
-
 dependencies {
-    implementation project(':backend')
+    implementation project(':backend-vlim2099')
 }
 
 publishing {
