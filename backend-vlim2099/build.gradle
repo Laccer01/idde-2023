@@ -1,0 +1,11 @@
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'edu.bbte.idde.vlim2099'
+            artifactId = 'vlim2099-backend'
+            version = '1.0-SNAPSHOT'
+
+            from components.java
+        }
+    }
+}
