@@ -1,10 +1,14 @@
 h1{
-  text-align: center;
+  text-align:center;
 }
 
 body {
   background: #FFFFFF;
-  text-align: left;
+  padding: 10px;
+}
+
+a{
+    text-align: right;
 }
 
 .card {
@@ -16,9 +20,12 @@ body {
   width: 400px;
   text-align: center;
   padding: 20px;
+  line-height: 1.6;
 }
 
+
 .card-1 {
+  line-height: 1.6;
   padding: 40px;
   margin-top: 25px;
   max-width: 200px;
@@ -33,22 +40,30 @@ body {
 
 .button {
 
-  background-color: #000000;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
+  display: inline-block;
+  padding: 10px 20px;
   font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.6;
-  transition: 0.3s;
-  float: right;
-  text-decoration: none;
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
 }
 
 .button:hover {
-  opacity: 1
+    background-color: #3e8e41
 }
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
 
 
 

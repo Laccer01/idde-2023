@@ -37,10 +37,10 @@ public class UsedCarsPageServlet extends HttpServlet {
         LOGGER.info("Request arrived to example servlet");
 
         Map<String, Object> model = new ConcurrentHashMap<>();
-        boolean isLoggedInVar = true;
+        boolean isZero = usedCarDao.findAllUsedCar().size() == 0;
 
         model.put("usedCars", usedCarDao.findAllUsedCar());
-        model.put("isLoggedIn", isLoggedInVar);
+        model.put("userCarsSize", isZero);
 
         Template template = HandlebarsTemplateFactory.getTemplate("index");
         template.apply(model, resp.getWriter());

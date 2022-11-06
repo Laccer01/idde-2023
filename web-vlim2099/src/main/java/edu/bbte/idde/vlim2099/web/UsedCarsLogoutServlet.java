@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @WebServlet("/usedCarsLogout")
 public class UsedCarsLogoutServlet extends HttpServlet {
@@ -35,6 +37,9 @@ public class UsedCarsLogoutServlet extends HttpServlet {
             session = req.getSession(true);
 
         session.invalidate();
-        resp.sendRedirect("/usedCars-web/login.html");
+        Map<String, Object> model = new ConcurrentHashMap<>();
+        model.put("error", false);
+        Template template = HandlebarsTemplateFactory.getTemplate("login");
+        template.apply(model, resp.getWriter());
     }
 }

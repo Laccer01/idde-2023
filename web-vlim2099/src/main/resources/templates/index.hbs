@@ -6,14 +6,20 @@
 </head>
 <body>
     <h1>All used cars</h1>
+    <br><br>
+    <a href="/usedCars-web/usedCarsLogout" class="button"> Logout </a>
 
-    <a href="/usedCars-web/usedCarsLogout"> Logout </a>
+    {{#if userCarsSize}}
+    <br><br><br>
+        <h3 style="text-align:center;">No cars inserted yet.</h3>
+    {{/if}}
 
 
     <span>
         <ul>
           {{#each usedCars}}
            <div class="card card-1">
+                Car details: <br><br>
                 brand: {{brand}}<br>
                 model: {{model}}<br>
                 engine size: {{engineSize}}<br>

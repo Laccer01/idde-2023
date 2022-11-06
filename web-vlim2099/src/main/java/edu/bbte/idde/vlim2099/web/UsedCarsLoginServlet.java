@@ -34,7 +34,7 @@ public class UsedCarsLoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         LOGGER.info("Request arrived to UsedCarsLogin servlet");
 
         boolean isLoggedInVar = true;
@@ -57,7 +57,10 @@ public class UsedCarsLoginServlet extends HttpServlet {
         }
         else{
 
-            resp.sendRedirect("/usedCars-web/login.html");
+            Map<String, Object> model = new ConcurrentHashMap<>();
+            model.put("error", true);
+            Template template = HandlebarsTemplateFactory.getTemplate("login");
+            template.apply(model, resp.getWriter());
         }
 
     }

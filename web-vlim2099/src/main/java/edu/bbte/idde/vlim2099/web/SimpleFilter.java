@@ -1,5 +1,6 @@
 package edu.bbte.idde.vlim2099.web;
 
+import com.github.jknack.handlebars.Template;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -11,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @WebFilter("/usedCarsPage")
 public class SimpleFilter extends HttpFilter {
@@ -22,10 +25,17 @@ public class SimpleFilter extends HttpFilter {
         HttpSession session = req.getSession(false);
 
         if (session == null) {
-            res.sendRedirect("/usedCars-web/login.html");
+            Map<String, Object> model = new ConcurrentHashMap<>();
+            model.put("error", false);
+            Template template = HandlebarsTemplateFactory.getTemplate("login");
+            template.apply(model, res.getWriter());
+
         } else if (session.getAttribute("loggedIn") == null || session.getAttribute("loggedIn") != "true") {
-            LOGGER.info("minden okes {}", session.getAttribute("loggedIn"));
-            res.sendRedirect("/usedCars-web/login.html");
+            Map<String, Object> model = new ConcurrentHashMap<>();
+            model.put("error", false);
+            Template template = HandlebarsTemplateFactory.getTemplate("login");
+            template.apply(model, res.getWriter());
+
         } else {
             chain.doFilter(req, res);
         }
