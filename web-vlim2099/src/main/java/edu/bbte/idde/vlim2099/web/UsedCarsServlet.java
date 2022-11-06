@@ -127,10 +127,11 @@ public class UsedCarsServlet extends HttpServlet {
             }
 
         }
-        catch(NumberFormatException exc) {
+        catch (IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("Invalid number");
+            resp.getWriter().println("Invalid data");
         }
+
 
     }
 

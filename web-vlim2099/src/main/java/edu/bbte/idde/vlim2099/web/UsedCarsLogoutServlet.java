@@ -15,35 +15,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
-@WebServlet("/usedCarsPage")
-public class UsedCarsPageServlet extends HttpServlet {
+@WebServlet("/usedCarsLogout")
+public class UsedCarsLogoutServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsedCarsServlet.class);
-    private UsedCarDao usedCarDao;
-    private ObjectMapper objectMapper;
 
     @Override
     public void init() throws ServletException {
-        LOGGER.info("The UsedCarPageServlet was initialized");
-        usedCarDao = new UsedCarMemoryDao();
-        objectMapper = ObjectMapperFactory.getObjectMapper();
+        LOGGER.info("The UsedCarLogoutServlet was initialized");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        LOGGER.info("Request arrived to example servlet");
+        LOGGER.info("Request arrived to UsedCarsLogout servlet");
 
-        Map<String, Object> model = new ConcurrentHashMap<>();
-        boolean isLoggedInVar = true;
+        HttpSession session;
+        session = req.getSession(false);
+        if (session==null)
+            session = req.getSession(true);
 
-        model.put("usedCars", usedCarDao.findAllUsedCar());
-        model.put("isLoggedIn", isLoggedInVar);
-
-        Template template = HandlebarsTemplateFactory.getTemplate("index");
-        template.apply(model, resp.getWriter());
-
+        session.invalidate();
+        resp.sendRedirect("/usedCars-web/login.html");
     }
 }
