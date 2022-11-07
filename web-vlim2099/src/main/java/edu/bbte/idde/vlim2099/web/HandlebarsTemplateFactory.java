@@ -18,7 +18,6 @@ public class HandlebarsTemplateFactory {
         if (handlebars == null) {
             LOG.info("Building handlebars renderer");
 
-
             TemplateLoader loader = new ClassPathTemplateLoader();
             loader.setPrefix("/templates");
             loader.setSuffix(".hbs");

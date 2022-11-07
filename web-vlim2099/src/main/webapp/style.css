@@ -1,5 +1,10 @@
 h1{
-  text-align:center;
+  text-align: center;
+}
+
+h3{
+  text-align: center;
+  text-size: 25px;
 }
 
 body {
@@ -20,12 +25,13 @@ a{
   width: 400px;
   text-align: center;
   padding: 20px;
-  line-height: 1.6;
+  line-height: 1.0px;
+  font-size: 20px;
 }
 
-
 .card-1 {
-  line-height: 1.6;
+  line-height: 1.0px;
+  font-size: 20px;
   padding: 40px;
   margin-top: 25px;
   max-width: 200px;

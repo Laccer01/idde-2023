@@ -1,11 +1,7 @@
 package edu.bbte.idde.vlim2099.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jknack.handlebars.Template;
-import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
-import edu.bbte.idde.vlim2099.backend.dao.memory.UsedCarMemoryDao;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,9 +29,11 @@ public class UsedCarsLogoutServlet extends HttpServlet {
 
         HttpSession session;
         session = req.getSession(false);
-        if (session==null)
+        if (session == null) {
             session = req.getSession(true);
+        }
 
+        //törli a session tartalmát és betölti a login oldalt
         session.invalidate();
         Map<String, Object> model = new ConcurrentHashMap<>();
         model.put("error", false);

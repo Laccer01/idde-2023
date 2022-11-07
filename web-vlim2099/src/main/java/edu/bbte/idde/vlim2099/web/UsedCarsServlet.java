@@ -21,6 +21,59 @@ public class UsedCarsServlet extends HttpServlet {
     private UsedCarDao usedCarDao;
     private ObjectMapper objectMapper;
 
+    boolean notNullParameters(UsedCar usedCar,
+                      HttpServletResponse resp) throws IOException {
+        if (usedCar.getPrice() == null || usedCar.getYearOfManufacture() == null
+                || usedCar.getNumberOfKm() == null || usedCar.getEngineSize() == null
+                || usedCar.getBrand() == null || usedCar.getModel() == null
+                || usedCar.getHorsePower() == null || usedCar.getChassisNumber() == null) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().println("Please fill all the properities of the car");
+            return false;
+        }
+        return true;
+    }
+
+    boolean correctInput(UsedCar usedCar,
+                          HttpServletResponse resp) throws IOException {
+
+        boolean goodInput = true;
+        if (notNullParameters(usedCar,resp)) {
+            if (usedCar.getEngineSize() < 0.0) {
+                goodInput = false;
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().println("Engine size was not correct, lower than 0");
+            }
+
+            if (usedCar.getHorsePower() <= 0) {
+                goodInput = false;
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().println("The horse power was not correct, lower than 1");
+            }
+
+            if (usedCar.getNumberOfKm() < 0.0) {
+                goodInput = false;
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().println("The number of km was not correct, lower than 0");
+            }
+
+            if (usedCar.getYearOfManufacture() < 1886) {
+                goodInput = false;
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().println("The number of km was not correct, lower than 1886");
+            }
+
+            if (usedCar.getPrice() < 0) {
+                goodInput = false;
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().println("The price was not correct, it was lower than 0");
+            }
+            return goodInput;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void init() throws ServletException {
         LOGGER.info("The UsedCarServlet was initialized");
@@ -28,10 +81,12 @@ public class UsedCarsServlet extends HttpServlet {
         objectMapper = ObjectMapperFactory.getObjectMapper();
     }
 
+    //ha volt megadva id vissza adja az adott id-jű autót, ha létezik
+    //ha nem volt megadva id paraméter akkor visszatéríti az összes autót
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOGGER.info("Get method (UsedCarsServlet");
-        
+
         String idParameter = req.getParameter("id");
         if (idParameter == null) {
             resp.setHeader("Content-Type", "application/json");
@@ -47,94 +102,35 @@ public class UsedCarsServlet extends HttpServlet {
                     resp.setHeader("Content-Type", "application/json");
                     objectMapper.writeValue(resp.getOutputStream(), usedCar);
                 }
-            } catch(NumberFormatException exc) {
+            } catch (NumberFormatException exc) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.getWriter().println("Invalid ID");
             }
         }
     }
 
+    //beszúr egy autót, ha megfelel a feltételeknek
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean goodInput = true;
-
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         LOGGER.info("Post method (UsedCarsServlet");
         resp.setHeader("Content-Type", "application/json");
 
-        try
-        {
+        try {
             UsedCar usedCar = objectMapper.readValue(req.getInputStream(), UsedCar.class);
 
-            if (usedCar.getBrand() == "" || usedCar.getBrand()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("No brand name");
-            }
-
-            if (usedCar.getModel() == "" || usedCar.getModel()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("No model name");
-            }
-
-            if (usedCar.getEngineSize() < 0 || usedCar.getEngineSize()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("Engine size was not correct, lower than 0");
-            }
-
-            if (usedCar.getHorsePower() <= 0 || usedCar.getHorsePower()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("The horse power was not correct, lower than 1");
-            }
-
-            if (usedCar.getNumberOfKm() < 0 || usedCar.getNumberOfKm()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("The number of km was not correct, lower than 0");
-            }
-
-            if (usedCar.getYearOfManufacture() < 1886 || usedCar.getYearOfManufacture()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("The number of km was not correct, lower than 1886");
-            }
-
-            if (usedCar.getChassisNumber() == "" || usedCar.getChassisNumber()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("The chassis number was not correct, it was empty");
-            }
-
-            if (usedCar.getPrice() < 0 || usedCar.getPrice()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("The price was not correct, it was lower than 0");
-            }
-
-            if (goodInput)
-            {
+            if (correctInput(usedCar, resp)) {
                 usedCarDao.createNewUsedCar(usedCar);
+                resp.getWriter().println("The car was inserted");
             }
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().println("Invalid data");
         }
-
-
     }
 
+    //kitöröl egy adott id paraméterű autot
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LOGGER.info("Delete method (UsedCarsServlet");
@@ -155,105 +151,41 @@ public class UsedCarsServlet extends HttpServlet {
                     resp.setHeader("Content-Type", "application/json");
                     resp.getWriter().println("The car was deleted");
                 }
-            } catch(NumberFormatException exc) {
+            } catch (NumberFormatException exc) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.getWriter().println("Invalid ID");
             }
         }
     }
 
+    //frissiti az adott id paraméterű autot ha megfelelőek a paraméterei
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean goodInput = true;
-        Long id = null;
+        Long id;
         LOGGER.info("Put method (UsedCarsServlet");
         resp.setHeader("Content-Type", "application/json");
 
         UsedCar usedCar = objectMapper.readValue(req.getInputStream(), UsedCar.class);
 
-        String idParameter = req.getParameter("id");
-
-        if (usedCar.getBrand() == "" || usedCar.getBrand()==null)
-            {
-                goodInput = false;
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("No brand name");
-        }
-
-        if (usedCar.getModel() == "" || usedCar.getModel()==null)
-        {
-            goodInput = false;
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("No model name");
-        }
-
-        if (usedCar.getEngineSize() < 0 || usedCar.getEngineSize()==null)
-        {
-            goodInput = false;
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("Engine size was not correct, lower than 0");
-        }
-
-        if (usedCar.getHorsePower() <= 0 || usedCar.getHorsePower()==null)
-        {
-            goodInput = false;
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("The horse power was not correct, lower than 1");
-        }
-
-        if (usedCar.getNumberOfKm() < 0 || usedCar.getNumberOfKm()==null)
-        {
-            goodInput = false;
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("The number of km was not correct, lower than 0");
-        }
-
-        if (usedCar.getYearOfManufacture() < 1886 || usedCar.getYearOfManufacture()==null)
-        {
-            goodInput = false;
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("The number of km was not correct, lower than 1886");
-        }
-
-        if (usedCar.getChassisNumber() == "" || usedCar.getChassisNumber()==null)
-        {
-            goodInput = false;
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("The chassis number was not correct, it was empty");
-        }
-
-        if (usedCar.getPrice() < 0 || usedCar.getPrice()==null)
-        {
-            goodInput = false;
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            resp.getWriter().println("The price was not correct, it was lower than 0");
-        }
-
-        if (idParameter == null) {
-            goodInput = false;
-            resp.getWriter().println("The id parameter was null");
-        }
-        else
-        {
-            try{
-                id = Long.parseLong(idParameter);
-                UsedCar idUsedCar = usedCarDao.findById(id);
-                if (idUsedCar == null)
-                {
-                    goodInput = false;
-                    resp.getWriter().println("Not found a car with the given id");
+        if (correctInput(usedCar, resp)) {
+            String idParameter = req.getParameter("id");
+            if (idParameter == null) {
+                resp.getWriter().println("The id parameter was null");
+            } else {
+                try {
+                    id = Long.parseLong(idParameter);
+                    UsedCar idUsedCar = usedCarDao.findById(id);
+                    if (idUsedCar == null) {
+                        resp.getWriter().println("Not found a car with the given id");
+                    } else {
+                        usedCarDao.updateUsedCar(usedCar, id);
+                        resp.getWriter().println("The car was updated");
+                    }
+                } catch (NumberFormatException exc) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    resp.getWriter().println("Invalid ID");
                 }
             }
-
-            catch(NumberFormatException exc) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("Invalid ID");
-            }
-        }
-
-        if (goodInput)
-        {
-            usedCarDao.updateUsedCar(usedCar, id);
         }
     }
 }

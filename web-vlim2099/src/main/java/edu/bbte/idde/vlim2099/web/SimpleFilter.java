@@ -18,10 +18,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @WebFilter("/usedCarsPage")
 public class SimpleFilter extends HttpFilter {
 
-    Logger LOGGER = LoggerFactory.getLogger(SimpleFilter.class);
+    Logger logger = LoggerFactory.getLogger(SimpleFilter.class);
 
     @Override
-    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
         HttpSession session = req.getSession(false);
 
         if (session == null) {
@@ -29,17 +30,18 @@ public class SimpleFilter extends HttpFilter {
             model.put("error", false);
             Template template = HandlebarsTemplateFactory.getTemplate("login");
             template.apply(model, res.getWriter());
-
-        } else if (session.getAttribute("loggedIn") == null || session.getAttribute("loggedIn") != "true") {
+            //amennyiben nincs bejelentkezve a felhasználó áirányítja egy login oldalra hibaüzenettel málkül
+        } else if (session.getAttribute("loggedIn") == null) {
             Map<String, Object> model = new ConcurrentHashMap<>();
             model.put("error", false);
             Template template = HandlebarsTemplateFactory.getTemplate("login");
             template.apply(model, res.getWriter());
 
         } else {
+            //ellenkező esetben engedi hogy megnézze a weboldalt
             chain.doFilter(req, res);
         }
 
-        LOGGER.info("Method: {}, URL: {}, Status: {}", req.getMethod(), req.getRequestURI(), res.getStatus());
+        logger.info("Method: {}, URL: {}, Status: {}", req.getMethod(), req.getRequestURI(), res.getStatus());
     }
 }
