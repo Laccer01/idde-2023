@@ -10,6 +10,10 @@ public class UsedCar extends BaseEntity {
     private String chassisNumber;
     private Integer price;
 
+    public UsedCar() {
+        super();
+    }
+
     public UsedCar(String brand, String model, Double engineSize, Integer horsePower,
                    Double numberOfKm, Integer yearOfManufacture, String chassisNumber, Integer price) {
         super();
