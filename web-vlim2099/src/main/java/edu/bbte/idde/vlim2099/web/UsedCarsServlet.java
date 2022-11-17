@@ -28,6 +28,7 @@ public class UsedCarsServlet extends HttpServlet {
                 || usedCar.getBrand() == null || usedCar.getModel() == null
                 || usedCar.getHorsePower() == null || usedCar.getChassisNumber() == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.sendError(400);
             resp.getWriter().println("Please fill all the properities of the car");
             return false;
         }
@@ -42,30 +43,35 @@ public class UsedCarsServlet extends HttpServlet {
             if (usedCar.getEngineSize() < 0.0) {
                 goodInput = false;
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.sendError(400);
                 resp.getWriter().println("Engine size was not correct, lower than 0");
             }
 
             if (usedCar.getHorsePower() <= 0) {
                 goodInput = false;
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.sendError(400);
                 resp.getWriter().println("The horse power was not correct, lower than 1");
             }
 
             if (usedCar.getNumberOfKm() < 0.0) {
                 goodInput = false;
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.sendError(400);
                 resp.getWriter().println("The number of km was not correct, lower than 0");
             }
 
             if (usedCar.getYearOfManufacture() < 1886) {
                 goodInput = false;
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.sendError(400);
                 resp.getWriter().println("The number of km was not correct, lower than 1886");
             }
 
             if (usedCar.getPrice() < 0) {
                 goodInput = false;
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.sendError(400);
                 resp.getWriter().println("The price was not correct, it was lower than 0");
             }
             return goodInput;
@@ -98,6 +104,7 @@ public class UsedCarsServlet extends HttpServlet {
                 if (usedCar == null) {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
                     resp.getWriter().println("The car wasn't found");
+                    resp.sendError(404);
                 } else {
                     resp.setHeader("Content-Type", "application/json");
                     objectMapper.writeValue(resp.getOutputStream(), usedCar);
@@ -105,6 +112,7 @@ public class UsedCarsServlet extends HttpServlet {
             } catch (NumberFormatException exc) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.getWriter().println("Invalid ID");
+                resp.sendError(400);
             }
         }
     }
@@ -126,6 +134,7 @@ public class UsedCarsServlet extends HttpServlet {
 
         } catch (IOException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.sendError(400);
             resp.getWriter().println("Invalid data");
         }
     }
@@ -145,6 +154,7 @@ public class UsedCarsServlet extends HttpServlet {
                 UsedCar usedCar = usedCarDao.findById(id);
                 if (usedCar == null) {
                     resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.sendError(400);
                     resp.getWriter().println("The car wasn't found");
                 } else {
                     usedCarDao.deleteUsedCar(id);
@@ -154,6 +164,7 @@ public class UsedCarsServlet extends HttpServlet {
             } catch (NumberFormatException exc) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.getWriter().println("Invalid ID");
+                resp.sendError(400);
             }
         }
     }
@@ -171,12 +182,14 @@ public class UsedCarsServlet extends HttpServlet {
             String idParameter = req.getParameter("id");
             if (idParameter == null) {
                 resp.getWriter().println("The id parameter was null");
+                resp.sendError(400);
             } else {
                 try {
                     id = Long.parseLong(idParameter);
                     UsedCar idUsedCar = usedCarDao.findById(id);
                     if (idUsedCar == null) {
                         resp.getWriter().println("Not found a car with the given id");
+                        resp.sendError(404);
                     } else {
                         usedCarDao.updateUsedCar(usedCar, id);
                         resp.getWriter().println("The car was updated");
@@ -184,8 +197,14 @@ public class UsedCarsServlet extends HttpServlet {
                 } catch (NumberFormatException exc) {
                     resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     resp.getWriter().println("Invalid ID");
+                    resp.sendError(400);
                 }
             }
+        }
+        else {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().println("Bad parameters");
+            resp.sendError(400);
         }
     }
 }
