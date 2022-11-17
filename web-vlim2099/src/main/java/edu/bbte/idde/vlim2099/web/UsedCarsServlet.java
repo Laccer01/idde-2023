@@ -200,8 +200,7 @@ public class UsedCarsServlet extends HttpServlet {
                     resp.sendError(400);
                 }
             }
-        }
-        else {
+        } else {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().println("Bad parameters");
             resp.sendError(400);
