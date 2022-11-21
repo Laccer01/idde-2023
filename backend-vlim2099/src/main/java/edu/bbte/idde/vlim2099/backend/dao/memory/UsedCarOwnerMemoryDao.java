@@ -1,8 +1,6 @@
 package edu.bbte.idde.vlim2099.backend.dao.memory;
 
-import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarOwnerDao;
-import edu.bbte.idde.vlim2099.backend.model.UsedCar;
 import edu.bbte.idde.vlim2099.backend.model.UsedCarOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
     private static final Map<Long, UsedCarOwner> USED_CAR_OWNER_ENTITIES = new ConcurrentHashMap<>();
     private static final AtomicLong ID_GENERATOR = new AtomicLong();
     private static final Logger LOG = LoggerFactory.getLogger(UsedCarOwnerMemoryDao.class);
-
 
     @Override
     public UsedCarOwner findById(Long ownerId) {

@@ -9,6 +9,7 @@ public abstract class DaoFactory {
     private static DaoFactory instance;
 
     public abstract UsedCarDao getUsedCarDao();
+
     public abstract UsedCarOwnerDao getUsedCarOwnerDao();
 
     public static synchronized DaoFactory getInstance() {

@@ -17,7 +17,6 @@ public class UsedCarOwner extends BaseEntity  {
     private String address;
     private Integer usedCarId;
 
-
     public void setOwner(UsedCarOwner newUsedCarOwner) {
         this.firstName = newUsedCarOwner.firstName;
         this.lastName = newUsedCarOwner.lastName;

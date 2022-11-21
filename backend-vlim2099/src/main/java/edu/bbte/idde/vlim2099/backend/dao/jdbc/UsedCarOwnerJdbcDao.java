@@ -1,8 +1,6 @@
 package edu.bbte.idde.vlim2099.backend.dao.jdbc;
 
-import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarOwnerDao;
-import edu.bbte.idde.vlim2099.backend.model.UsedCar;
 import edu.bbte.idde.vlim2099.backend.model.UsedCarOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +18,9 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
     private final DataSource dataSource;
     private static final Logger LOGGER = LoggerFactory.getLogger(UsedCarOwnerJdbcDao.class);
 
-
     public UsedCarOwnerJdbcDao() {
             dataSource = DataSourceFactory.getDataSource();
     }
-
 
     @Override
     public UsedCarOwner findById(Long id) {
@@ -68,7 +64,6 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
         }
-
     }
 
     @Override
@@ -89,7 +84,6 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
                         set.getInt("usedCarId"));
 
                 usedCarOwnersCurrent.setId(set.getLong("usedCarOwnerID"));
-
                 usedCarOwners.add(usedCarOwnersCurrent);
             }
         } catch (SQLException e) {
@@ -102,10 +96,10 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
     public void updateUsedCarOwner(UsedCarOwner usedCarOwner, Long id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
-                    .prepareStatement("Update UsedCarOwner " +
-                            "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?," +
-                            "email = ?, address = ?, usedCarId = ? " +
-                            "where usedCarOwnerID = ?");
+                    .prepareStatement("Update UsedCarOwner "
+                            + "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?,"
+                            + "email = ?, address = ?, usedCarId = ? "
+                            + "where usedCarOwnerID = ?");
             prep.setString(1, usedCarOwner.getFirstName());
             prep.setString(2, usedCarOwner.getLastName());
             prep.setDate(3, usedCarOwner.getBirthDay());
@@ -116,6 +110,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
 
             prep.setLong(8, id);
             ResultSet set = prep.executeQuery();
+            LOGGER.error("Ennyi sor lett frissítve: {}", set);
 
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
@@ -127,8 +122,8 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
 
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
-                    .prepareStatement("Delete UsedCarOwner " +
-                            "where usedCarOwnerID = ?");
+                    .prepareStatement("Delete UsedCarOwner "
+                            + "where usedCarOwnerID = ?");
 
             int set = prep.executeUpdate();
             LOGGER.error("Ennyi sor lett törölve: {}", set);

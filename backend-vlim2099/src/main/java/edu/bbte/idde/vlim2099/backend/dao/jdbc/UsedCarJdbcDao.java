@@ -15,12 +15,10 @@ public class UsedCarJdbcDao implements UsedCarDao {
     private final DataSource dataSource;
     private static final Logger LOGGER = LoggerFactory.getLogger(UsedCarJdbcDao.class);
 
-
     public UsedCarJdbcDao() {
             dataSource = DataSourceFactory.getDataSource();
     }
 
-    ///az adatbazisban van id, de a konstruktorban nincsen
     @Override
     public UsedCar findById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
@@ -41,6 +39,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
 
                return currentCar;
             }
+
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
         }
@@ -98,10 +97,10 @@ public class UsedCarJdbcDao implements UsedCarDao {
     public void updateUsedCar(UsedCar usedCar, Long id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
-                    .prepareStatement("Update UsedCar " +
-                            "Set brand = ?, model = ?, engineSize = ?, horsePower = ?," +
-                            "numberOfKm = ?, yearOfManufacture = ?, chassisNumber = ?, price = ? " +
-                            "where usedCarID = ?");
+                    .prepareStatement("Update UsedCar "
+                            + "Set brand = ?, model = ?, engineSize = ?, horsePower = ?,"
+                            + "numberOfKm = ?, yearOfManufacture = ?, chassisNumber = ?, price = ? "
+                            + "where usedCarID = ?");
             prep.setString(1, usedCar.getBrand());
             prep.setString(2, usedCar.getModel());
             prep.setDouble(3, usedCar.getEngineSize());
@@ -113,6 +112,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
 
             prep.setLong(9, id);
             ResultSet set = prep.executeQuery();
+            LOGGER.error("Ennyi sor lett frissítve: {}", set);
 
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
