@@ -3,8 +3,6 @@ package edu.bbte.idde.vlim2099.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bbte.idde.vlim2099.backend.dao.DaoFactory;
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
-import edu.bbte.idde.vlim2099.backend.dao.memory.MemoryDaoFactory;
-import edu.bbte.idde.vlim2099.backend.dao.memory.UsedCarMemoryDao;
 import edu.bbte.idde.vlim2099.backend.model.UsedCar;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

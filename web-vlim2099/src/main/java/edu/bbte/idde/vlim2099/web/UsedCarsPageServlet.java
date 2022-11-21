@@ -3,7 +3,6 @@ package edu.bbte.idde.vlim2099.web;
 import com.github.jknack.handlebars.Template;
 import edu.bbte.idde.vlim2099.backend.dao.DaoFactory;
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
-import edu.bbte.idde.vlim2099.backend.dao.memory.UsedCarMemoryDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
