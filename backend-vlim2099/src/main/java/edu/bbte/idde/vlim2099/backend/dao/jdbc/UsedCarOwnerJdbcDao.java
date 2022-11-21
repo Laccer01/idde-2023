@@ -108,8 +108,8 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
             prep.setString(6, usedCarOwner.getAddress());
             prep.setInt(7, usedCarOwner.getUsedCarId());
 
-            prep.setLong(8, id);
-            ResultSet set = prep.executeQuery();
+            prep.setLong(9, id);
+            int set = prep.executeUpdate();
             LOGGER.error("Ennyi sor lett frissítve: {}", set);
 
         } catch (SQLException e) {
@@ -132,5 +132,32 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
             LOGGER.error("Hiba: {}", e.toString());
         }
 
+    }
+
+    @Override
+    public Collection<UsedCarOwner> findByLastName(String lastName) {
+        Collection<UsedCarOwner> usedCarOwners = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement prep = connection
+                    .prepareStatement("select * from UsedCarOwner Where lastName = ?");
+            prep.setString(1, lastName);
+            ResultSet set = prep.executeQuery();
+            while (set.next()) {
+
+                UsedCarOwner usedCarOwnersCurrent = new UsedCarOwner(set.getString("firstName"),
+                        set.getString("lastName"),
+                        set.getDate("birthDay"),
+                        set.getString("gender"),
+                        set.getString("email"),
+                        set.getString("address"),
+                        set.getInt("usedCarId"));
+
+                usedCarOwnersCurrent.setId(set.getLong("usedCarOwnerID"));
+                usedCarOwners.add(usedCarOwnersCurrent);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+        }
+        return usedCarOwners;
     }
 }

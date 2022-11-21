@@ -1,7 +1,7 @@
 package edu.bbte.idde.vlim2099.backend.model;
 
 import lombok.*;
-
+//Lombok a boiler kód generáláshoz
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)

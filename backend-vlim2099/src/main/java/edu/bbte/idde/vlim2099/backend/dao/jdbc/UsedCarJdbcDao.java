@@ -111,7 +111,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
             prep.setInt(8, usedCar.getPrice());
 
             prep.setLong(9, id);
-            ResultSet set = prep.executeQuery();
+            int set = prep.executeUpdate();
             LOGGER.error("Ennyi sor lett frissítve: {}", set);
 
         } catch (SQLException e) {
@@ -134,5 +134,33 @@ public class UsedCarJdbcDao implements UsedCarDao {
             LOGGER.error("Hiba: {}", e.toString());
         }
 
+    }
+
+    @Override
+    public Collection<UsedCar> findByBrand(String brand) {
+        Collection<UsedCar> usedCars = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement prep = connection
+                    .prepareStatement("select * from UsedCar where brand = ?");
+            prep.setString(1, brand);
+            ResultSet set = prep.executeQuery();
+            while (set.next()) {
+                UsedCar currentCar = new UsedCar(set.getString("brand"),
+                        set.getString("model"),
+                        set.getDouble("engineSize"),
+                        set.getInt("horsePower"),
+                        set.getDouble("numberOfKm"),
+                        set.getInt("yearOfManufacture"),
+                        set.getString("chassisNumber"),
+                        set.getInt("price"));
+                currentCar.setId(set.getLong("usedCarID"));
+
+                usedCars.add(currentCar);
+
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+        }
+        return usedCars;
     }
 }

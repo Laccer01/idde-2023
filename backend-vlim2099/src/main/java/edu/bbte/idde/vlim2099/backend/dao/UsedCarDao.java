@@ -14,6 +14,7 @@ public interface UsedCarDao {
 
     void deleteUsedCar(Long id);
 
+    Collection<UsedCar> findByBrand(String brand);
 }
 
 

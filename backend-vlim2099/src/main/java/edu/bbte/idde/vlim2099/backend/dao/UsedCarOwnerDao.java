@@ -1,7 +1,6 @@
 package edu.bbte.idde.vlim2099.backend.dao;
 
 import edu.bbte.idde.vlim2099.backend.model.UsedCarOwner;
-
 import java.util.Collection;
 
 public interface UsedCarOwnerDao {
@@ -15,6 +14,7 @@ public interface UsedCarOwnerDao {
 
     void deleteUsedCarOwner(Long id);
 
+    Collection<UsedCarOwner> findByLastName(String lastName);
 }
 
 

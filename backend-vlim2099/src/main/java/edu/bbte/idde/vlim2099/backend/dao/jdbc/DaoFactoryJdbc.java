@@ -9,7 +9,7 @@ public class DaoFactoryJdbc extends DaoFactory {
     private static UsedCarOwnerJdbcDao daoUsedCarOwner;
 
     @Override
-    public synchronized  UsedCarDao getUsedCarDao() {
+    public synchronized UsedCarDao getUsedCarDao() {
         if (daoUsedCar == null) {
             daoUsedCar = new UsedCarJdbcDao();
         }
