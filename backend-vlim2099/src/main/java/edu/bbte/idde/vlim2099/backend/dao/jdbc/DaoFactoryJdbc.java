@@ -8,7 +8,6 @@ public class DaoFactoryJdbc extends DaoFactory {
     private static UsedCarJdbcDao daoUsedCar;
     private static UsedCarOwnerJdbcDao daoUsedCarOwner;
 
-
     @Override
     public UsedCarDao getUsedCarDao() {
         if (daoUsedCar == null) {
@@ -24,7 +23,5 @@ public class DaoFactoryJdbc extends DaoFactory {
         }
         return daoUsedCarOwner;
     }
-
-
 }
 

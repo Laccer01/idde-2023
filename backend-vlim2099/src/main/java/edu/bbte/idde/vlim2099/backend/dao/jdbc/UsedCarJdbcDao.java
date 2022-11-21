@@ -124,8 +124,8 @@ public class UsedCarJdbcDao implements UsedCarDao {
     public void deleteUsedCar(Long id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
-                    .prepareStatement("Delete from UsedCar " +
-                            "where usedCarID = ?");
+                    .prepareStatement("Delete from UsedCar "
+                            + "where usedCarID = ?");
 
             prep.setLong(1, id);
             int set = prep.executeUpdate();

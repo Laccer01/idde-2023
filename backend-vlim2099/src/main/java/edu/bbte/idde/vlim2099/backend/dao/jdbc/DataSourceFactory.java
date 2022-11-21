@@ -14,10 +14,10 @@ public class DataSourceFactory {
         if (dataSource == null) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-            }
-            catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            } ;
+            }
+
             Config config = ConfigFactory.getConfig();
             HikariConfig hikariConfig = new HikariConfig();
 
