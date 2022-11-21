@@ -7,17 +7,21 @@ import edu.bbte.idde.vlim2099.backend.dao.UsedCarOwnerDao;
 public class DaoFactoryJdbc extends DaoFactory {
     private static UsedCarJdbcDao daoUsedCar;
     private static UsedCarOwnerJdbcDao daoUsedCarOwner;
-    private static final Object lock = new Object();
-
 
     @Override
-    public UsedCarDao getUsedCarDao() {
-        return (daoUsedCar != null ? daoUsedCar : (daoUsedCar = new UsedCarJdbcDao()));
+    public synchronized  UsedCarDao getUsedCarDao() {
+        if (daoUsedCar == null) {
+            daoUsedCar = new UsedCarJdbcDao();
+        }
+        return daoUsedCar;
     }
 
     @Override
-    public UsedCarOwnerDao getUsedCarOwnerDao() {
-        return (daoUsedCarOwner != null ? daoUsedCarOwner : (daoUsedCarOwner = new UsedCarOwnerJdbcDao()));
+    public synchronized UsedCarOwnerDao getUsedCarOwnerDao() {
+        if (daoUsedCarOwner == null) {
+            daoUsedCarOwner = new UsedCarOwnerJdbcDao();
+        }
+        return daoUsedCarOwner;
     }
 }
 
