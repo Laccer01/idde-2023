@@ -16,7 +16,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsedCarJdbcDao.class);
 
     public UsedCarJdbcDao() {
-            dataSource = DataSourceFactory.getDataSource();
+        dataSource = DataSourceFactory.getDataSource();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
                         set.getInt("price"));
                 currentCar.setId(set.getLong("usedCarID"));
 
-               return currentCar;
+                return currentCar;
             }
 
         } catch (SQLException e) {

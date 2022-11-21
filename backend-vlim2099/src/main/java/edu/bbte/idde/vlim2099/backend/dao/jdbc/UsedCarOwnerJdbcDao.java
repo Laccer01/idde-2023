@@ -19,7 +19,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsedCarOwnerJdbcDao.class);
 
     public UsedCarOwnerJdbcDao() {
-            dataSource = DataSourceFactory.getDataSource();
+        dataSource = DataSourceFactory.getDataSource();
     }
 
     @Override
