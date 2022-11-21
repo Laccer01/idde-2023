@@ -1,7 +1,9 @@
 package edu.bbte.idde.vlim2099.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.bbte.idde.vlim2099.backend.dao.DaoFactory;
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
+import edu.bbte.idde.vlim2099.backend.dao.memory.MemoryDaoFactory;
 import edu.bbte.idde.vlim2099.backend.dao.memory.UsedCarMemoryDao;
 import edu.bbte.idde.vlim2099.backend.model.UsedCar;
 import jakarta.servlet.ServletException;
@@ -83,7 +85,7 @@ public class UsedCarsServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         LOGGER.info("The UsedCarServlet was initialized");
-        usedCarDao = new UsedCarMemoryDao();
+        usedCarDao = DaoFactory.getInstance().getUsedCarDao();
         objectMapper = ObjectMapperFactory.getObjectMapper();
     }
 
@@ -133,8 +135,11 @@ public class UsedCarsServlet extends HttpServlet {
             }
 
         } catch (IOException e) {
+            LOGGER.info(String.valueOf(e));
+            resp.getWriter().println(e);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.sendError(400);
+
             resp.getWriter().println("Invalid data");
         }
     }

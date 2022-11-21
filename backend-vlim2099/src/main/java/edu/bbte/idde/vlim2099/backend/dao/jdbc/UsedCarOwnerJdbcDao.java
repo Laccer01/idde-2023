@@ -1,0 +1,141 @@
+package edu.bbte.idde.vlim2099.backend.dao.jdbc;
+
+import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
+import edu.bbte.idde.vlim2099.backend.dao.UsedCarOwnerDao;
+import edu.bbte.idde.vlim2099.backend.model.UsedCar;
+import edu.bbte.idde.vlim2099.backend.model.UsedCarOwner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
+
+    private final DataSource dataSource;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsedCarOwnerJdbcDao.class);
+
+
+    public UsedCarOwnerJdbcDao() {
+            dataSource = DataSourceFactory.getDataSource();
+    }
+
+
+    @Override
+    public UsedCarOwner findById(Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement prep = connection
+                    .prepareStatement("select * from UsedCarOwner where usedCarOwnerID = ?");
+            prep.setLong(1, id);
+            ResultSet set = prep.executeQuery();
+            if (set.next()) {
+
+                UsedCarOwner usedCarOwner = new UsedCarOwner(set.getString("firstName"),
+                        set.getString("lastName"),
+                        set.getDate("birthDay"),
+                        set.getString("gender"),
+                        set.getString("email"),
+                        set.getString("address"),
+                        set.getInt("usedCarId"));
+                usedCarOwner.setId(set.getLong("usedCarOwnerID"));
+                return usedCarOwner;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+        }
+        return null;
+    }
+
+    @Override
+    public void createNewUsedCarOwner(UsedCarOwner usedCarOwner) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement prep = connection
+                    .prepareStatement("insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, ?)");
+            prep.setString(1, usedCarOwner.getFirstName());
+            prep.setString(2, usedCarOwner.getLastName());
+            prep.setDate(3, usedCarOwner.getBirthDay());
+            prep.setString(4, usedCarOwner.getGender());
+            prep.setString(5, usedCarOwner.getEmail());
+            prep.setString(6, usedCarOwner.getAddress());
+            prep.setInt(7, usedCarOwner.getUsedCarId());
+
+            prep.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+        }
+
+    }
+
+    @Override
+    public Collection<UsedCarOwner> findAllUsedCarOwner() {
+        Collection<UsedCarOwner> usedCarOwners = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement prep = connection
+                    .prepareStatement("select * from UsedCarOwner");
+            ResultSet set = prep.executeQuery();
+            while (set.next()) {
+
+                UsedCarOwner usedCarOwnersCurrent = new UsedCarOwner(set.getString("firstName"),
+                        set.getString("lastName"),
+                        set.getDate("birthDay"),
+                        set.getString("gender"),
+                        set.getString("email"),
+                        set.getString("address"),
+                        set.getInt("usedCarId"));
+
+                usedCarOwnersCurrent.setId(set.getLong("usedCarOwnerID"));
+
+                usedCarOwners.add(usedCarOwnersCurrent);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+        }
+        return usedCarOwners;
+    }
+
+    @Override
+    public void updateUsedCarOwner(UsedCarOwner usedCarOwner, Long id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement prep = connection
+                    .prepareStatement("Update UsedCarOwner " +
+                            "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?," +
+                            "email = ?, address = ?, usedCarId = ? " +
+                            "where usedCarOwnerID = ?");
+            prep.setString(1, usedCarOwner.getFirstName());
+            prep.setString(2, usedCarOwner.getLastName());
+            prep.setDate(3, usedCarOwner.getBirthDay());
+            prep.setString(4, usedCarOwner.getGender());
+            prep.setString(5, usedCarOwner.getEmail());
+            prep.setString(6, usedCarOwner.getAddress());
+            prep.setInt(7, usedCarOwner.getUsedCarId());
+
+            prep.setLong(8, id);
+            ResultSet set = prep.executeQuery();
+
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+        }
+    }
+
+    @Override
+    public void deleteUsedCarOwner(Long id) {
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement prep = connection
+                    .prepareStatement("Delete UsedCarOwner " +
+                            "where usedCarOwnerID = ?");
+
+            int set = prep.executeUpdate();
+            LOGGER.error("Ennyi sor lett törölve: {}", set);
+
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+        }
+
+    }
+}

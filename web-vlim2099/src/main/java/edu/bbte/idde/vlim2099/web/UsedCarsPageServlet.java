@@ -1,6 +1,7 @@
 package edu.bbte.idde.vlim2099.web;
 
 import com.github.jknack.handlebars.Template;
+import edu.bbte.idde.vlim2099.backend.dao.DaoFactory;
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.backend.dao.memory.UsedCarMemoryDao;
 import jakarta.servlet.ServletException;
@@ -22,7 +23,7 @@ public class UsedCarsPageServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         LOGGER.info("The UsedCarPageServlet was initialized");
-        usedCarDao = new UsedCarMemoryDao();
+        usedCarDao = DaoFactory.getInstance().getUsedCarDao();
     }
 
     //kilistázza az összes autót egy dinamikusan generált oldalra
