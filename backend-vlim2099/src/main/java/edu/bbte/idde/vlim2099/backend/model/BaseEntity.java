@@ -1,15 +1,9 @@
 package edu.bbte.idde.vlim2099.backend.model;
 
+import lombok.Data;
 import java.io.Serializable;
 
+@Data
 public class BaseEntity implements Serializable {
     protected Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

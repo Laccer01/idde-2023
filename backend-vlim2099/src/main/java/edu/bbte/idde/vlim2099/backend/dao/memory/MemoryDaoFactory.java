@@ -13,9 +13,9 @@ public class MemoryDaoFactory extends DaoFactory {
     public synchronized UsedCarDao getUsedCarDao() {
         if (daoUsedCar == null) {
             daoUsedCar = new UsedCarMemoryDao();
-            daoUsedCar.createNewUsedCar(new UsedCar("wolksvagen", "passat cc",1800.9, 210, 10800.12,
+            daoUsedCar.create(new UsedCar("wolksvagen", "passat cc",1800.9, 210, 10800.12,
                     2020, "JH4KA8162MC010197", 10200));
-            daoUsedCar.createNewUsedCar(new UsedCar("bmw", "X5",2000.9, 190, 100800.12,
+            daoUsedCar.create(new UsedCar("bmw", "X5",2000.9, 190, 100800.12,
                     2012, "1FTEX1C85AFB83192", 4200));
         }
         return daoUsedCar;

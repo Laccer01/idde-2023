@@ -31,9 +31,9 @@ public class UsedCarsPageServlet extends HttpServlet {
         LOGGER.info("Request arrived to example servlet");
 
         Map<String, Object> model = new ConcurrentHashMap<>();
-        boolean isZero = usedCarDao.findAllUsedCar().size() == 0;
+        boolean isZero = usedCarDao.findAll().size() == 0;
 
-        model.put("usedCars", usedCarDao.findAllUsedCar());
+        model.put("usedCars", usedCarDao.findAll());
         model.put("userCarsSize", isZero);
 
         Template template = HandlebarsTemplateFactory.getTemplate("index");

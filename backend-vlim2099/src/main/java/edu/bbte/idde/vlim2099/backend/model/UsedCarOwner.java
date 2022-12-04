@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor()
 
-public class UsedCarOwner extends BaseEntity  {
+public class    UsedCarOwner extends BaseEntity  {
     private String firstName;
     private String lastName;
     private java.sql.Date birthDay;

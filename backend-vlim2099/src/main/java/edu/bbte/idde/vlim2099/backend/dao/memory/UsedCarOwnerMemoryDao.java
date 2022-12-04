@@ -28,7 +28,7 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
     }
 
     @Override
-    public void createNewUsedCarOwner(UsedCarOwner usedCarOwner) {
+    public void create(UsedCarOwner usedCarOwner) {
         Long currentUsedCarOwnerId = ID_GENERATOR.getAndIncrement();
         usedCarOwner.setId(currentUsedCarOwnerId);
         USED_CAR_OWNER_ENTITIES.put(currentUsedCarOwnerId, usedCarOwner);
@@ -36,19 +36,19 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
     }
 
     @Override
-    public Collection<UsedCarOwner> findAllUsedCarOwner() {
+    public Collection<UsedCarOwner> findAll() {
         LOG.info("All used car owner has been found");
         return USED_CAR_OWNER_ENTITIES.values();
     }
 
     @Override
-    public void updateUsedCarOwner(UsedCarOwner usedCarOwner, Long id) {
+    public void update(UsedCarOwner usedCarOwner, Long id) {
         LOG.info("The used car owner with id {} has been updated", id);
         USED_CAR_OWNER_ENTITIES.get(id).setOwner(usedCarOwner);
     }
 
     @Override
-    public void deleteUsedCarOwner(Long id) {
+    public void delete(Long id) {
         LOG.info("The used car owner with id {} has been deleted", id);
         USED_CAR_OWNER_ENTITIES.remove(id);
     }
