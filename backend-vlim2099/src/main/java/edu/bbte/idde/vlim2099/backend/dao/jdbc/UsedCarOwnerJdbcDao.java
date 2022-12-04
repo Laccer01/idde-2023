@@ -22,7 +22,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         dataSource = DataSourceFactory.getDataSource();
     }
 
-    private UsedCarOwner createUsedCarOwnerFromResult (ResultSet set) throws SQLException {
+    private UsedCarOwner createUsedCarOwnerFromResult(ResultSet set) throws SQLException {
         UsedCarOwner usedCarOwner = new UsedCarOwner(set.getString("firstName"),
                 set.getString("lastName"),
                 set.getDate("birthDay"),
@@ -34,7 +34,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         return usedCarOwner;
     }
 
-    private PreparedStatement createPreparedStatement (PreparedStatement prep,
+    private PreparedStatement createPreparedStatement(PreparedStatement prep,
                                                        UsedCarOwner usedCarOwner) throws SQLException {
         prep.setString(1, usedCarOwner.getFirstName());
         prep.setString(2, usedCarOwner.getLastName());

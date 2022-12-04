@@ -19,7 +19,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
         dataSource = DataSourceFactory.getDataSource();
     }
 
-    private UsedCar createUsedCarFromResult (ResultSet set) throws SQLException {
+    private UsedCar createUsedCarFromResult(ResultSet set) throws SQLException {
         UsedCar currentCar = new UsedCar(set.getString("brand"),
                 set.getString("model"),
                 set.getDouble("engineSize"),
@@ -32,7 +32,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
         return currentCar;
     }
 
-    private PreparedStatement createPreparedStatement (PreparedStatement prep, UsedCar usedCar) throws SQLException {
+    private PreparedStatement createPreparedStatement(PreparedStatement prep, UsedCar usedCar) throws SQLException {
         prep.setString(1, usedCar.getBrand());
         prep.setString(2, usedCar.getModel());
         prep.setDouble(3, usedCar.getEngineSize());

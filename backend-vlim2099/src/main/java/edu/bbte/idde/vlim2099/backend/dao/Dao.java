@@ -4,7 +4,7 @@ import edu.bbte.idde.vlim2099.backend.model.BaseEntity;
 
 import java.util.Collection;
 
-    public interface Dao<T extends BaseEntity> {
+public interface Dao<T extends BaseEntity> {
     T findById(Long id);
 
     void create(T entity);
