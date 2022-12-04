@@ -2,7 +2,6 @@ package edu.bbte.idde.vlim2099.backend.dao.jdbc;
 
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.backend.model.UsedCar;
-import edu.bbte.idde.vlim2099.backend.model.UsedCarOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +52,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
             prep.setLong(1, id);
             ResultSet set = prep.executeQuery();
             if (set.next()) {
-                UsedCar currentCar = createUsedCarFromResult(set);
-                return currentCar;
+                return createUsedCarFromResult(set);
             }
 
         } catch (SQLException e) {

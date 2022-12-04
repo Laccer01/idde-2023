@@ -1,7 +1,6 @@
 package edu.bbte.idde.vlim2099.backend.dao;
 
 import edu.bbte.idde.vlim2099.backend.model.BaseEntity;
-import edu.bbte.idde.vlim2099.backend.model.UsedCar;
 
 import java.util.Collection;
 

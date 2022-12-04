@@ -34,7 +34,8 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         return usedCarOwner;
     }
 
-    private PreparedStatement createPreparedStatement (PreparedStatement prep, UsedCarOwner usedCarOwner) throws SQLException {
+    private PreparedStatement createPreparedStatement (PreparedStatement prep,
+                                                       UsedCarOwner usedCarOwner) throws SQLException {
         prep.setString(1, usedCarOwner.getFirstName());
         prep.setString(2, usedCarOwner.getLastName());
         prep.setDate(3, usedCarOwner.getBirthDay());
