@@ -1,8 +1,8 @@
 package edu.bbte.idde.vlim2099.web;
 
 import com.github.jknack.handlebars.Template;
+import edu.bbte.idde.vlim2099.backend.dao.DaoFactory;
 import edu.bbte.idde.vlim2099.backend.dao.UsedCarDao;
-import edu.bbte.idde.vlim2099.backend.dao.memory.UsedCarMemoryDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,7 +22,7 @@ public class UsedCarsPageServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         LOGGER.info("The UsedCarPageServlet was initialized");
-        usedCarDao = new UsedCarMemoryDao();
+        usedCarDao = DaoFactory.getInstance().getUsedCarDao();
     }
 
     //kilistázza az összes autót egy dinamikusan generált oldalra
@@ -31,9 +31,9 @@ public class UsedCarsPageServlet extends HttpServlet {
         LOGGER.info("Request arrived to example servlet");
 
         Map<String, Object> model = new ConcurrentHashMap<>();
-        boolean isZero = usedCarDao.findAllUsedCar().size() == 0;
+        boolean isZero = usedCarDao.findAll().size() == 0;
 
-        model.put("usedCars", usedCarDao.findAllUsedCar());
+        model.put("usedCars", usedCarDao.findAll());
         model.put("userCarsSize", isZero);
 
         Template template = HandlebarsTemplateFactory.getTemplate("index");
