@@ -127,8 +127,14 @@ public class UsedCarJdbcDao implements UsedCarDao {
                             + "where usedCarID = ?");
 
             prep.setLong(1, id);
-            int set = prep.executeUpdate();
-            LOGGER.error("Ennyi sor lett törölve: {}", set);
+            try {
+                int set = prep.executeUpdate();
+                LOGGER.error("Ennyi sor lett törölve: {}", set);
+            } catch (SQLException e) {
+                LOGGER.error("Hiba, nem lehet kitörölni az adott autót: {}", e.toString());
+                //ha egy autóhoz tartozik legalább egy owner akkor nem lehet kitörölni
+            }
+
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
         }
