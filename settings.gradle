@@ -2,3 +2,5 @@ rootProject.name = 'lab-vlim2099'
 include 'backend-vlim2099'
 include 'desktop-vlim2099'
 include 'web-vlim2099'
+include 'spring-vlim2099'
+

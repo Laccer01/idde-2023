@@ -1,0 +1,6 @@
+jdbc:
+  url: "localhost:3306"
+  user: "user"
+  passwd: "localhost1234"
+  database: "usedCarsDatabase"
+  poolSize: 10
