@@ -1,11 +1,7 @@
 package edu.bbte.idde.vlim2099.spring.controller.dto.incoming;
 
-import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
 import lombok.Data;
-
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 
 @Data
 public class UsedCarOwnerCreationDto {

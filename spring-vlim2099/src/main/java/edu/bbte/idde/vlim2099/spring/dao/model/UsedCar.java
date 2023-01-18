@@ -2,9 +2,7 @@ package edu.bbte.idde.vlim2099.spring.dao.model;
 
 import lombok.*; //Lombok a boiler kód generáláshoz
 
-import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
-import java.util.Collection;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -13,7 +11,7 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name="SpringUsedCar")
+@Table(name = "SpringUsedCar")
 
 public class UsedCar extends BaseEntity {
     @NotNull
@@ -39,7 +37,6 @@ public class UsedCar extends BaseEntity {
     private Integer price;
     @ManyToOne(cascade = CascadeType.ALL)
     private UsedCarOwner usedCarOwner;
-
 
     public void setCar(UsedCar newUsedCar) {
         this.brand = newUsedCar.brand;

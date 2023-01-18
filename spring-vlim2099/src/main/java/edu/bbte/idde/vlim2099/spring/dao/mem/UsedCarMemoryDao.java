@@ -31,7 +31,6 @@ public class UsedCarMemoryDao implements UsedCarDao {
         return searchedCar;
     }
 
-
     @Override
     public UsedCar saveAndFlush(UsedCar usedCar) {
         if (usedCar.getId() == null) {
@@ -39,24 +38,17 @@ public class UsedCarMemoryDao implements UsedCarDao {
             usedCar.setId(currentUsedCarId);
             USED_CAR_ENTITIES.put(currentUsedCarId, usedCar);
             LOG.info("New car with id {} has been created",currentUsedCarId);
-        }
-        else {
+        } else {
             LOG.info("The car with id {} has been updated", usedCar.getId());
             USED_CAR_ENTITIES.get(usedCar.getId()).setCar(usedCar);
         }
         return usedCar;
-
     }
 
     @Override
     public Collection<UsedCar> findAll() {
         LOG.info("All cars has been found");
         return USED_CAR_ENTITIES.values();
-    }
-
-    public void update(UsedCar usedCar) {
-
-
     }
 
     @Override
@@ -87,5 +79,4 @@ public class UsedCarMemoryDao implements UsedCarDao {
         }
         return currentUsedCardBrand;
     }
-
 }

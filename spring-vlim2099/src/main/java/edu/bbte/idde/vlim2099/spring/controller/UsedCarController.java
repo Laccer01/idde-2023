@@ -32,8 +32,7 @@ public class UsedCarController {
     @GetMapping
     @ResponseBody
     public Collection<UsedCarResponseDto> findAll(
-            @RequestParam(value = "brand", required = false) String brand)
-    {
+            @RequestParam(value = "brand", required = false) String brand) {
         if (brand != null) {
             LOGGER.info("All used cars with brand: {} have been found!", brand);
             return usedCarMapper.modelsToDtos(usedCarDao.findByBrand(brand));

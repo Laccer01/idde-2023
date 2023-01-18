@@ -79,7 +79,6 @@ public class UsedCarJdbcDao implements UsedCarDao {
                 return null;
             }
 
-
             PreparedStatement prep = connection
                     .prepareStatement("insert into UsedCar values(default, ?, ?, ?, ?, ?, ?, ?, ?)");
             prep = createPreparedStatement(prep, usedCar);
@@ -95,9 +94,6 @@ public class UsedCarJdbcDao implements UsedCarDao {
             LOGGER.error("Hiba: {}", e.toString());
             return null;
         }
-
-
-
     }
 
     @Override
@@ -116,7 +112,6 @@ public class UsedCarJdbcDao implements UsedCarDao {
         }
         return usedCars;
     }
-
 
     @Override
     public void delete(UsedCar usedCar) {

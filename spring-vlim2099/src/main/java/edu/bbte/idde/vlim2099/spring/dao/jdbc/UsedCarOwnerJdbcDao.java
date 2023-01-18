@@ -74,14 +74,11 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
             if (usedCarOwner.getId() != null) {
                 return null;
             }
-            else
-            {
-                PreparedStatement prep = connection
-                        .prepareStatement("insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, ?)");
-                prep = createPreparedStatement(prep, usedCarOwner);
-                prep.executeUpdate();
-                return usedCarOwner;
-            }
+            PreparedStatement prep = connection
+                    .prepareStatement("insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, ?)");
+            prep = createPreparedStatement(prep, usedCarOwner);
+            prep.executeUpdate();
+            return usedCarOwner;
 
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());

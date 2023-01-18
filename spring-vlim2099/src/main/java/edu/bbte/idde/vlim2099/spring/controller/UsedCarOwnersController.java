@@ -9,7 +9,6 @@ import edu.bbte.idde.vlim2099.spring.controller.mapper.UsedCarMapper;
 import edu.bbte.idde.vlim2099.spring.controller.mapper.UsedCarOwnerMapper;
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarOwnerDao;
-import edu.bbte.idde.vlim2099.spring.dao.jpa.UsedCarOwnerJpaDao;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import lombok.extern.slf4j.Slf4j;

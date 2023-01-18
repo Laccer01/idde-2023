@@ -1,7 +1,6 @@
 package edu.bbte.idde.vlim2099.spring.dao.mem;
 
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarOwnerDao;
-import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,6 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
         return searchedOwner;
     }
 
-
     @Override
     public UsedCarOwner saveAndFlush(UsedCarOwner usedCarOwner) {
         if (usedCarOwner.getId() == null) {
@@ -40,8 +38,7 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
             usedCarOwner.setId(currentUsedCarId);
             USED_CAR_OWNER_ENTITIES.put(currentUsedCarId, usedCarOwner);
             LOG.info("New car owner with id {} has been created",currentUsedCarId);
-        }
-        else {
+        } else {
             LOG.info("The car with id {} has been updated", usedCarOwner.getId());
             USED_CAR_OWNER_ENTITIES.get(usedCarOwner.getId()).setOwner(usedCarOwner);
         }
@@ -53,8 +50,6 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
         LOG.info("All used car owner has been found");
         return USED_CAR_OWNER_ENTITIES.values();
     }
-
-
 
     @Override
     public void delete(UsedCarOwner usedCarOwner) {

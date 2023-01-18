@@ -4,21 +4,17 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
-
-//Lombok a boiler kód generáláshoz
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor()
 @Entity
-@Table(name="SpringUsedCarOwner")
+@Table(name = "SpringUsedCarOwner")
 
 public class UsedCarOwner extends BaseEntity {
     @NotNull

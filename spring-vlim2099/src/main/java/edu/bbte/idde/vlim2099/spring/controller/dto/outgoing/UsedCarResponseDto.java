@@ -1,6 +1,5 @@
 package edu.bbte.idde.vlim2099.spring.controller.dto.outgoing;
 
-import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
