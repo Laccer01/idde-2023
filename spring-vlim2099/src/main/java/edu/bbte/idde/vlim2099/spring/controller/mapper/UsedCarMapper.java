@@ -10,7 +10,6 @@ import java.util.Collection;
 
 @Mapper(componentModel = "spring")
 public interface UsedCarMapper {
-    UsedCarMapper INSTANCE = Mappers.getMapper(UsedCarMapper.class);
 
     UsedCarResponseDto modelToDto(UsedCar usedCar);
 

@@ -2,6 +2,7 @@ package edu.bbte.idde.vlim2099.spring.dao.jdbc;
 
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
+import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,8 @@ public class UsedCarJdbcDao implements UsedCarDao {
                 set.getDouble("numberOfKm"),
                 set.getInt("yearOfManufacture"),
                 set.getString("chassisNumber"),
-                set.getInt("price"));
+                set.getInt("price"),
+                (UsedCarOwner) set.getObject("usedCarOwner"));
         currentCar.setId(set.getLong("usedCarID"));
         return currentCar;
     }
@@ -54,7 +56,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
     }
 
     @Override
-    public UsedCar findById(Long id) {
+    public UsedCar getById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
                     .prepareStatement("select * from UsedCar where usedCarID = ?");
@@ -71,15 +73,30 @@ public class UsedCarJdbcDao implements UsedCarDao {
     }
 
     @Override
-    public void create(UsedCar usedCar) {
+    public UsedCar saveAndFlush(UsedCar usedCar) {
         try (Connection connection = dataSource.getConnection()) {
+            if (usedCar.getId() != null) {
+                return null;
+            }
+
+
             PreparedStatement prep = connection
                     .prepareStatement("insert into UsedCar values(default, ?, ?, ?, ?, ?, ?, ?, ?)");
             prep = createPreparedStatement(prep, usedCar);
+
             prep.executeUpdate();
+            ResultSet keys = prep.getGeneratedKeys();
+            if (keys.next()) {
+                usedCar.setId(keys.getLong(1));
+            }
+
+            return usedCar;
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
+            return null;
         }
+
+
 
     }
 
@@ -100,33 +117,15 @@ public class UsedCarJdbcDao implements UsedCarDao {
         return usedCars;
     }
 
-    @Override
-    public void update(UsedCar usedCar, Long id) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement prep = connection
-                    .prepareStatement("Update UsedCar "
-                            + "Set brand = ?, model = ?, engineSize = ?, horsePower = ?,"
-                            + "numberOfKm = ?, yearOfManufacture = ?, chassisNumber = ?, price = ? "
-                            + "where usedCarID = ?");
-            prep = createPreparedStatement(prep, usedCar);
-            prep.setLong(9, id);
-            int set = prep.executeUpdate();
-            LOGGER.error("Ennyi sor lett frissítve: {}", set);
-
-        } catch (SQLException e) {
-            LOGGER.error("Hiba: {}", e.toString());
-        }
-
-    }
 
     @Override
-    public void delete(Long id) {
+    public void delete(UsedCar usedCar) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
                     .prepareStatement("Delete from UsedCar "
                             + "where usedCarID = ?");
 
-            prep.setLong(1, id);
+            prep.setLong(1, usedCar.getId());
             try {
                 int set = prep.executeUpdate();
                 LOGGER.error("Ennyi sor lett törölve: {}", set);
@@ -158,4 +157,5 @@ public class UsedCarJdbcDao implements UsedCarDao {
         }
         return usedCars;
     }
+
 }

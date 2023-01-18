@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 import javax.sql.DataSource;
 
 @Configuration
-@Profile("!mem")
+@Profile("jdbc")
 public class DataSourceFactory {
 
     @Value("${jdbc.url:localhost}")
@@ -19,8 +19,6 @@ public class DataSourceFactory {
     private  String jdbcUser;
     @Value("${jdbc.passwd:root}")
     private  String passwd;
-    @Value("${jdbc.database:horses}")
-    private  String database;
     @Value("${jdbc.poolSize:10}")
     private  Integer connectionNumber;
 
@@ -29,10 +27,9 @@ public class DataSourceFactory {
     public DataSource getDataSource() {
         HikariConfig hikariConfig = new HikariConfig();
 
-        hikariConfig.setJdbcUrl("jdbc:mysql://" + jdbcUrl + "/" + database);
+        hikariConfig.setJdbcUrl(jdbcUrl);
         hikariConfig.setUsername(jdbcUser);
         hikariConfig.setPassword(passwd);
-
         hikariConfig.setMaximumPoolSize(connectionNumber);
 
         return new HikariDataSource(hikariConfig);

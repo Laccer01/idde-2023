@@ -1,23 +1,45 @@
 package edu.bbte.idde.vlim2099.spring.dao.model;
 
-import lombok.*;
-//Lombok a boiler kód generáláshoz
+import lombok.*; //Lombok a boiler kód generáláshoz
+
+import org.hibernate.annotations.Cascade;
+import javax.persistence.*;
+import java.util.Collection;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-@NoArgsConstructor()
+@Entity
+@Table(name="SpringUsedCar")
 
 public class UsedCar extends BaseEntity {
+    @NotNull
     private String brand;
+    @NotNull
     private String model;
+    @NotNull
+    @Positive
     private Double engineSize;
+    @NotNull
+    @Positive
     private Integer horsePower;
+    @NotNull
+    @Positive
     private Double numberOfKm;
+    @NotNull
+    @Positive
     private Integer yearOfManufacture;
+    @NotNull
     private String chassisNumber;
+    @NotNull
+    @Positive
     private Integer price;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private UsedCarOwner usedCarOwner;
+
 
     public void setCar(UsedCar newUsedCar) {
         this.brand = newUsedCar.brand;
@@ -28,6 +50,7 @@ public class UsedCar extends BaseEntity {
         this.yearOfManufacture = newUsedCar.yearOfManufacture;
         this.chassisNumber = newUsedCar.chassisNumber;
         this.price = newUsedCar.price;
+        this.usedCarOwner = newUsedCar.usedCarOwner;
     }
 
 }
