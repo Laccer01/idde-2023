@@ -96,7 +96,8 @@ public class UsedCarOwnersController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody @Valid UsedCarOwnerCreationDto dto) throws SQLException {
+    public void update(@PathVariable("id") Long id, @RequestBody @Valid UsedCarOwnerCreationDto dto)
+            throws SQLException {
         LOGGER.info("The used owner car with the id: {} have been updated successfully!", id);
         UsedCarOwner updateCar = usedCarOwnerMapper.creationDtoToModel(dto);
         usedCarOwnerDao.saveAndFlush(updateCar);
@@ -110,7 +111,8 @@ public class UsedCarOwnersController {
     }
 
     @DeleteMapping("/{id}/usedCars/{usedCarId}")
-    public void deleteUsedCar(@PathVariable("id") Long id, @PathVariable("usedCarId") Long usedCarId) throws SQLException {
+    public void deleteUsedCar(@PathVariable("id") Long id, @PathVariable("usedCarId") Long usedCarId)
+            throws SQLException {
         UsedCarOwner usedCarOwner = usedCarOwnerDao.getById(id);
         UsedCar usedCar = usedCarDao.getById(usedCarId);
 

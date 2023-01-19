@@ -53,6 +53,7 @@ public class UsedCarController {
     public UsedCarResponseDto create(@RequestBody @Valid UsedCarCreationDto dto) throws SQLException {
         LOGGER.info("The new used car have been created successfully!");
         UsedCar newUsedCar = usedCarMapper.creationDtoToModel(dto);
+
         UsedCarOwner usedCarOwner = usedCarOwnerDao.getById(Long.valueOf(dto.getUsedCarOwnerId()));
         Collection<UsedCar> usedCarsFromOwner = usedCarOwner.getUsedCars();
         usedCarsFromOwner.add(newUsedCar);

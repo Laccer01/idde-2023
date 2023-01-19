@@ -47,8 +47,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         prep.setString(4, usedCarOwner.getGender());
         prep.setString(5, usedCarOwner.getEmail());
         prep.setString(6, usedCarOwner.getAddress());
-
-
+        ///itt ha null a paraméter akkor van gond, de nem tudom hogy lehetne ezt megoldani
         prep.setArray(7, (Array) usedCarOwner.getUsedCars());
 
         return prep;
@@ -98,10 +97,10 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
             }
             return usedCarOwner;
 
-            }catch (SQLException e) {
-                LOGGER.error("Hiba: {}", e.toString());
-                return null;
-            }
+        } catch (SQLException e) {
+            LOGGER.error("Hiba: {}", e.toString());
+            return null;
+        }
     }
 
     @Override
