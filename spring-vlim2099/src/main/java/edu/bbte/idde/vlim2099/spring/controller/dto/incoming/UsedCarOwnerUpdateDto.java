@@ -17,7 +17,6 @@ public class UsedCarOwnerUpdateDto {
     @NotNull
     private String address;
 
-    @NotNull
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<UsedCar> usedCars;
 }

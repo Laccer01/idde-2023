@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.Collection;
 
 @RestController
@@ -49,7 +50,7 @@ public class UsedCarController {
     }
 
     @PostMapping
-    public UsedCarResponseDto create(@RequestBody @Valid UsedCarCreationDto dto) {
+    public UsedCarResponseDto create(@RequestBody @Valid UsedCarCreationDto dto) throws SQLException {
         LOGGER.info("The new used car have been created successfully!");
         UsedCar newUsedCar = usedCarMapper.creationDtoToModel(dto);
         UsedCarOwner usedCarOwner = usedCarOwnerDao.getById(Long.valueOf(dto.getUsedCarOwnerId()));

@@ -76,7 +76,16 @@ public class UsedCarJdbcDao implements UsedCarDao {
     public UsedCar saveAndFlush(UsedCar usedCar) {
         try (Connection connection = dataSource.getConnection()) {
             if (usedCar.getId() != null) {
-                return null;
+                PreparedStatement prep = connection
+                        .prepareStatement("Update UsedCar "
+                                + "Set brand = ?, model = ?, engineSize = ?, horsePower = ?,"
+                                + "numberOfKm = ?, yearOfManufacture = ?, chassisNumber = ?, price = ? "
+                                + "where usedCarID = ?");
+                prep = createPreparedStatement(prep, usedCar);
+                prep.setLong(9, usedCar.getId());
+                int set = prep.executeUpdate();
+                LOGGER.error("Ennyi sor lett frissítve: {}", set);
+                return usedCar;
             }
 
             PreparedStatement prep = connection

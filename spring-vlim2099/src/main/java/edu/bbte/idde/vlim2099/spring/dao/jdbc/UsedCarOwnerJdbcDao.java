@@ -47,7 +47,10 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         prep.setString(4, usedCarOwner.getGender());
         prep.setString(5, usedCarOwner.getEmail());
         prep.setString(6, usedCarOwner.getAddress());
+
+
         prep.setArray(7, (Array) usedCarOwner.getUsedCars());
+
         return prep;
     }
 
@@ -68,23 +71,37 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
     }
 
     @Override
-    public UsedCarOwner saveAndFlush(UsedCarOwner usedCarOwner) {
+    public UsedCarOwner saveAndFlush(UsedCarOwner usedCarOwner) throws SQLException {
 
         try (Connection connection = dataSource.getConnection()) {
+            LOGGER.error("Hiba1");
             if (usedCarOwner.getId() != null) {
-                return null;
+                PreparedStatement prep = connection
+                        .prepareStatement("Update UsedCarOwner "
+                                + "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?,"
+                                + "email = ?, address = ?, usedCarId = ? "
+                                + "where usedCarOwnerID = ?");
+                prep = createPreparedStatement(prep, usedCarOwner);
+                prep.setLong(8, usedCarOwner.getId());
+                int set = prep.executeUpdate();
+                LOGGER.error("Ennyi sor lett frissítve: {}", set);
+                return usedCarOwner;
             }
             PreparedStatement prep = connection
-                    .prepareStatement("insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, ?)");
+                    .prepareStatement("Insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, ?)");
             prep = createPreparedStatement(prep, usedCarOwner);
+
             prep.executeUpdate();
+            ResultSet keys = prep.getGeneratedKeys();
+            if (keys.next()) {
+                usedCarOwner.setId(keys.getLong(1));
+            }
             return usedCarOwner;
 
-        } catch (SQLException e) {
-            LOGGER.error("Hiba: {}", e.toString());
-            return null;
-        }
-
+            }catch (SQLException e) {
+                LOGGER.error("Hiba: {}", e.toString());
+                return null;
+            }
     }
 
     @Override

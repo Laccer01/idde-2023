@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.Collection;
 
 @Slf4j
@@ -67,7 +68,7 @@ public class UsedCarOwnersController {
     }
 
     @PostMapping
-    public UsedCarOwnerResponseDto create(@RequestBody @Valid UsedCarOwnerCreationDto dto) {
+    public UsedCarOwnerResponseDto create(@RequestBody @Valid UsedCarOwnerCreationDto dto) throws SQLException {
         LOGGER.info("The new used car owner have been created successfully!");
         UsedCarOwner newUsedCarOwner = usedCarOwnerMapper.creationDtoToModel(dto);
         usedCarOwnerDao.saveAndFlush(newUsedCarOwner);
@@ -76,7 +77,7 @@ public class UsedCarOwnersController {
 
     @PostMapping("/{id}/usedCars")
     public UsedCarResponseDto createUsedCar(@RequestBody @Valid UsedCarCreationDto dto,
-                              @PathVariable("id") Long id) {
+                              @PathVariable("id") Long id) throws SQLException {
         LOGGER.info("The new used car for owner with id: {} have been created successfully!", id);
 
         UsedCar newUsedCar = usedCarMapper.creationDtoToModel(dto);
@@ -95,7 +96,7 @@ public class UsedCarOwnersController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody @Valid UsedCarOwnerCreationDto dto) {
+    public void update(@PathVariable("id") Long id, @RequestBody @Valid UsedCarOwnerCreationDto dto) throws SQLException {
         LOGGER.info("The used owner car with the id: {} have been updated successfully!", id);
         UsedCarOwner updateCar = usedCarOwnerMapper.creationDtoToModel(dto);
         usedCarOwnerDao.saveAndFlush(updateCar);
@@ -109,7 +110,7 @@ public class UsedCarOwnersController {
     }
 
     @DeleteMapping("/{id}/usedCars/{usedCarId}")
-    public void deleteUsedCar(@PathVariable("id") Long id, @PathVariable("usedCarId") Long usedCarId) {
+    public void deleteUsedCar(@PathVariable("id") Long id, @PathVariable("usedCarId") Long usedCarId) throws SQLException {
         UsedCarOwner usedCarOwner = usedCarOwnerDao.getById(id);
         UsedCar usedCar = usedCarDao.getById(usedCarId);
 
