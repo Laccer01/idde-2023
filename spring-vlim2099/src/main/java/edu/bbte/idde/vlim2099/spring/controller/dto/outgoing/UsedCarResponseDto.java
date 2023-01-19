@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UsedCarResponseDto {
+    private Long id;
     private String brand;
     private String model;
     private Double engineSize;

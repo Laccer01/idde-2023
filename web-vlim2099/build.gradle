@@ -8,10 +8,10 @@ apply plugin: 'war'
 
 dependencies {
     // https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    compileOnly group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '5.0.0'
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.4'
 
 
     implementation project(':backend-vlim2099')

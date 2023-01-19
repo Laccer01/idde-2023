@@ -23,7 +23,7 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
     private static final Logger LOG = LoggerFactory.getLogger(UsedCarOwnerMemoryDao.class);
 
     @Override
-    public UsedCarOwner findById(Long ownerId) {
+    public UsedCarOwner getById(Long ownerId) {
         UsedCarOwner searchedOwner = USED_CAR_OWNER_ENTITIES.get(ownerId);
         if (searchedOwner != null) {
             LOG.info("The owner with id {} has been found",searchedOwner);
@@ -32,11 +32,17 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
     }
 
     @Override
-    public void create(UsedCarOwner usedCarOwner) {
-        Long currentUsedCarOwnerId = ID_GENERATOR.getAndIncrement();
-        usedCarOwner.setId(currentUsedCarOwnerId);
-        USED_CAR_OWNER_ENTITIES.put(currentUsedCarOwnerId, usedCarOwner);
-        LOG.info("New owner with id {} has been created",currentUsedCarOwnerId);
+    public UsedCarOwner saveAndFlush(UsedCarOwner usedCarOwner) {
+        if (usedCarOwner.getId() == null) {
+            Long currentUsedCarId = ID_GENERATOR.getAndIncrement();
+            usedCarOwner.setId(currentUsedCarId);
+            USED_CAR_OWNER_ENTITIES.put(currentUsedCarId, usedCarOwner);
+            LOG.info("New car owner with id {} has been created",currentUsedCarId);
+        } else {
+            LOG.info("The car with id {} has been updated", usedCarOwner.getId());
+            USED_CAR_OWNER_ENTITIES.get(usedCarOwner.getId()).setOwner(usedCarOwner);
+        }
+        return usedCarOwner;
     }
 
     @Override
@@ -46,15 +52,9 @@ public class UsedCarOwnerMemoryDao implements UsedCarOwnerDao {
     }
 
     @Override
-    public void update(UsedCarOwner usedCarOwner, Long id) {
-        LOG.info("The used car owner with id {} has been updated", id);
-        USED_CAR_OWNER_ENTITIES.get(id).setOwner(usedCarOwner);
-    }
-
-    @Override
-    public void delete(Long id) {
-        LOG.info("The used car owner with id {} has been deleted", id);
-        USED_CAR_OWNER_ENTITIES.remove(id);
+    public void delete(UsedCarOwner usedCarOwner) {
+        LOG.info("The used car owner with id {} has been deleted", usedCarOwner.getId());
+        USED_CAR_OWNER_ENTITIES.remove(usedCarOwner.getId());
     }
 
     @Override
