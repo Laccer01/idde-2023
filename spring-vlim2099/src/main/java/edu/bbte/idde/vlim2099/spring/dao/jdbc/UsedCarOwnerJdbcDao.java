@@ -1,7 +1,6 @@
 package edu.bbte.idde.vlim2099.spring.dao.jdbc;
 
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarOwnerDao;
-import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
                 set.getString("gender"),
                 set.getString("email"),
                 set.getString("address"),
-                (Collection<UsedCar>) set.getArray("usedCars"));
+                 null);
         usedCarOwner.setId(set.getLong("usedCarOwnerID"));
         return usedCarOwner;
     }
@@ -47,7 +46,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         prep.setString(4, usedCarOwner.getGender());
         prep.setString(5, usedCarOwner.getEmail());
         prep.setString(6, usedCarOwner.getAddress());
-        prep.setArray(7, (Array) usedCarOwner.getUsedCars());
+
         return prep;
     }
 
@@ -70,18 +69,24 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
     @Override
     public UsedCarOwner saveAndFlush(UsedCarOwner usedCarOwner) {
 
-        if (usedCarOwner.getId() != null) {
-            return null;
-        }
-
         try (Connection connection = dataSource.getConnection()) {
+            if (usedCarOwner.getId() != null) {
+                PreparedStatement prep = connection
+                        .prepareStatement("Update UsedCarOwner "
+                                + "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?,"
+                                + "email = ?, address = ? "
+                                + "where usedCarOwnerID = ?", Statement.RETURN_GENERATED_KEYS);
+                prep = createPreparedStatement(prep, usedCarOwner);
+                prep.setLong(7, usedCarOwner.getId());
+                int set = prep.executeUpdate();
+                LOGGER.error("Ennyi sor lett frissítve: {}", set);
+                return usedCarOwner;
+            }
             PreparedStatement prep = connection
-                    .prepareStatement("Update UsedCarOwner "
-                            + "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?,"
-                            + "email = ?, address = ?, usedCarId = ? "
-                            + "where usedCarOwnerID = ?");
+                    .prepareStatement("Insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, default)",
+                            Statement.RETURN_GENERATED_KEYS);
             prep = createPreparedStatement(prep, usedCarOwner);
-            prep.setLong(8, usedCarOwner.getId());
+
             prep.executeUpdate();
 
             ResultSet keys = prep.getGeneratedKeys();
@@ -124,9 +129,11 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
             prep.setLong(1, usedCarOwner.getId());
             int set = prep.executeUpdate();
             LOGGER.error("Ennyi sor lett törölve: {}", set);
+
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
         }
+
     }
 
     @Override

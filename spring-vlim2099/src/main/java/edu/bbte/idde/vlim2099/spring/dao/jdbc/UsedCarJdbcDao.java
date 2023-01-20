@@ -2,7 +2,6 @@ package edu.bbte.idde.vlim2099.spring.dao.jdbc;
 
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
-import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -38,7 +34,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
                 set.getInt("yearOfManufacture"),
                 set.getString("chassisNumber"),
                 set.getInt("price"),
-                (UsedCarOwner) set.getObject("usedCarOwner"));
+                 null);
         currentCar.setId(set.getLong("usedCarID"));
         return currentCar;
     }
@@ -74,13 +70,23 @@ public class UsedCarJdbcDao implements UsedCarDao {
 
     @Override
     public UsedCar saveAndFlush(UsedCar usedCar) {
-        if (usedCar.getId() != null) {
-            return null;
-        }
-
         try (Connection connection = dataSource.getConnection()) {
+            if (usedCar.getId() != null) {
+                PreparedStatement prep = connection
+                        .prepareStatement("Update UsedCar "
+                                + "Set brand = ?, model = ?, engineSize = ?, horsePower = ?,"
+                                + "numberOfKm = ?, yearOfManufacture = ?, chassisNumber = ?, price = ? "
+                                + "where usedCarID = ?");
+                prep = createPreparedStatement(prep, usedCar);
+                prep.setLong(9, usedCar.getId());
+                int set = prep.executeUpdate();
+                LOGGER.error("Ennyi sor lett frissítve: {}", set);
+                return usedCar;
+            }
+
             PreparedStatement prep = connection
-                    .prepareStatement("insert into UsedCar values(default, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    .prepareStatement("insert into UsedCar values(default, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
             prep = createPreparedStatement(prep, usedCar);
 
             prep.executeUpdate();

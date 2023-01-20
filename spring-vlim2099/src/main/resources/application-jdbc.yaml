@@ -3,4 +3,3 @@ jdbc:
   user: "user"
   passwd: "localhost1234"
   poolSize: 10
-

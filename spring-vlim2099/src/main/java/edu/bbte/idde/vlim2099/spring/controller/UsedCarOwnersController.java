@@ -105,9 +105,11 @@ public class UsedCarOwnersController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") UsedCarOwner usedCarOwner) {
-        LOGGER.info("The used car owner with the id: {} have been deleted successfully!", usedCarOwner);
+    public void delete(@PathVariable("id") Long usedCarOwnerId) {
+        LOGGER.info("The used car owner with the id: {} have been deleted successfully!", usedCarOwnerId);
+        UsedCarOwner usedCarOwner = usedCarOwnerDao.getById(usedCarOwnerId);
         usedCarOwnerDao.delete(usedCarOwner);
+
     }
 
     @DeleteMapping("/{id}/usedCars/{usedCarId}")

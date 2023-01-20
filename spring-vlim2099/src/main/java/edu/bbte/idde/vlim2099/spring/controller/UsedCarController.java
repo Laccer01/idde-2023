@@ -55,11 +55,13 @@ public class UsedCarController {
 
         UsedCarOwner usedCarOwner = usedCarOwnerDao.getById(Long.valueOf(dto.getUsedCarOwnerId()));
         Collection<UsedCar> usedCarsFromOwner = usedCarOwner.getUsedCars();
-        usedCarsFromOwner.add(newUsedCar);
+        if (usedCarsFromOwner != null) {
+            usedCarsFromOwner.add(newUsedCar);
 
-        usedCarOwner.setUsedCars(usedCarsFromOwner);
+            usedCarOwner.setUsedCars(usedCarsFromOwner);
 
-        newUsedCar.setUsedCarOwner(usedCarOwner);
+            newUsedCar.setUsedCarOwner(usedCarOwner);
+        }
 
         usedCarDao.saveAndFlush(newUsedCar);
         return usedCarMapper.modelToDto(newUsedCar);
