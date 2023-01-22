@@ -1,6 +1,0 @@
-daoType: jdbc
-jdbcUser: user
-jdbcPassword: localhost1234
-jdbcDatabase: usedCarsDatabase
-jdbcUrl: localhost:3306
-jdbcPoolSize: 10
