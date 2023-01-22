@@ -74,6 +74,8 @@ public class UsedCarAndUsedCarOwnerController {
         usedCarOwner.setUsedCars(usedCars);
         if (usedCar != null) {
             usedCar.setUsedCarOwner(null);
+            ///nem tudtad hogy töröljem véglegesen az autok közűl ha nincs dao hozzá ezért állítottam át az id-t nullra
+
         }
 
         usedCarOwnerDao.saveAndFlush(usedCarOwner);
