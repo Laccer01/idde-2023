@@ -1,5 +1,5 @@
---az sql részt létrehozó script, hogy segítse az adatbázis létrehozását használatkor
 CREATE DATABASE usedCarsDatabase;
+DROP DATABASE usedCarsDatabase;
 use usedCarsDatabase;
 
 CREATE TABLE UsedCar (
@@ -23,13 +23,24 @@ CREATE TABLE UsedCarOwner (
     gender varchar(255),
     email varchar(255),
     address varchar(255),
-    usedCarId int,
+    usedCarId int default null,
     PRIMARY KEY (usedCarOwnerID),
 	FOREIGN KEY (usedCarId) REFERENCES UsedCar(usedCarID)
 );
 
 SELECT * FROM UsedCar;
 
+SELECT * FROM UsedCarOwner;
+
 DROP table UsedCarOwner;
 
 DROP table UsedCar;
+
+
+SELECT * FROM spring_used_car;
+SELECT * FROM spring_used_car_owner;
+SELECT * FROM spring_used_car_used_cars;
+
+DROP table  spring_used_car;
+DROP table  spring_used_car_owner;
+DROP table spring_used_car_used_cars;

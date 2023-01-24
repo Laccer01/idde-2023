@@ -9,10 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -36,7 +33,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
                 set.getString("gender"),
                 set.getString("email"),
                 set.getString("address"),
-                set.getInt("usedCarId"));
+                 null);
         usedCarOwner.setId(set.getLong("usedCarOwnerID"));
         return usedCarOwner;
     }
@@ -49,12 +46,12 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
         prep.setString(4, usedCarOwner.getGender());
         prep.setString(5, usedCarOwner.getEmail());
         prep.setString(6, usedCarOwner.getAddress());
-        prep.setInt(7, usedCarOwner.getUsedCarId());
+
         return prep;
     }
 
     @Override
-    public UsedCarOwner findById(Long id) {
+    public UsedCarOwner getById(Long id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
                     .prepareStatement("select * from UsedCarOwner where usedCarOwnerID = ?");
@@ -70,14 +67,37 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
     }
 
     @Override
-    public void create(UsedCarOwner usedCarOwner) {
+    public UsedCarOwner saveAndFlush(UsedCarOwner usedCarOwner) {
+
         try (Connection connection = dataSource.getConnection()) {
+            if (usedCarOwner.getId() != null) {
+                PreparedStatement prep = connection
+                        .prepareStatement("Update UsedCarOwner "
+                                + "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?,"
+                                + "email = ?, address = ? "
+                                + "where usedCarOwnerID = ?", Statement.RETURN_GENERATED_KEYS);
+                prep = createPreparedStatement(prep, usedCarOwner);
+                prep.setLong(7, usedCarOwner.getId());
+                int set = prep.executeUpdate();
+                LOGGER.error("Ennyi sor lett frissítve: {}", set);
+                return usedCarOwner;
+            }
             PreparedStatement prep = connection
-                    .prepareStatement("insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, ?)");
+                    .prepareStatement("Insert into UsedCarOwner values(default, ?, ?, ?, ?, ?, ?, default)",
+                            Statement.RETURN_GENERATED_KEYS);
             prep = createPreparedStatement(prep, usedCarOwner);
+
             prep.executeUpdate();
+
+            ResultSet keys = prep.getGeneratedKeys();
+            if (keys.next()) {
+                usedCarOwner.setId(keys.getLong(1));
+            }
+            return usedCarOwner;
+
         } catch (SQLException e) {
             LOGGER.error("Hiba: {}", e.toString());
+            return null;
         }
     }
 
@@ -99,32 +119,14 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
     }
 
     @Override
-    public void update(UsedCarOwner usedCarOwner, Long id) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement prep = connection
-                    .prepareStatement("Update UsedCarOwner "
-                            + "Set firstName = ?, lastName = ?, birthDay = ?, gender = ?,"
-                            + "email = ?, address = ?, usedCarId = ? "
-                            + "where usedCarOwnerID = ?");
-            prep = createPreparedStatement(prep, usedCarOwner);
-            prep.setLong(8, id);
-            int set = prep.executeUpdate();
-            LOGGER.error("Ennyi sor lett frissítve: {}", set);
-
-        } catch (SQLException e) {
-            LOGGER.error("Hiba: {}", e.toString());
-        }
-    }
-
-    @Override
-    public void delete(Long id) {
+    public void delete(UsedCarOwner usedCarOwner) {
 
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
                     .prepareStatement("Delete from UsedCarOwner "
                             + "where usedCarOwnerID = ?");
 
-            prep.setLong(1, id);
+            prep.setLong(1, usedCarOwner.getId());
             int set = prep.executeUpdate();
             LOGGER.error("Ennyi sor lett törölve: {}", set);
 

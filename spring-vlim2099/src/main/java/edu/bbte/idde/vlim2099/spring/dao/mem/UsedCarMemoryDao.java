@@ -23,7 +23,7 @@ public class UsedCarMemoryDao implements UsedCarDao {
     private static final Logger LOG = LoggerFactory.getLogger(UsedCarMemoryDao.class);
 
     @Override
-    public UsedCar findById(Long usedCarId) {
+    public UsedCar getById(Long usedCarId) {
         UsedCar searchedCar = USED_CAR_ENTITIES.get(usedCarId);
         if (searchedCar != null) {
             LOG.info("The car with id {} has been found",usedCarId);
@@ -32,11 +32,18 @@ public class UsedCarMemoryDao implements UsedCarDao {
     }
 
     @Override
-    public void create(UsedCar usedCar) {
-        Long currentUsedCarId = ID_GENERATOR.getAndIncrement();
-        usedCar.setId(currentUsedCarId);
-        USED_CAR_ENTITIES.put(currentUsedCarId, usedCar);
-        LOG.info("New car with id {} has been created",currentUsedCarId);
+    public UsedCar saveAndFlush(UsedCar usedCar) {
+        if (usedCar.getId() == null) {
+            Long currentUsedCarId = ID_GENERATOR.getAndIncrement();
+            usedCar.setId(currentUsedCarId);
+            USED_CAR_ENTITIES.put(currentUsedCarId, usedCar);
+            LOG.info("New car with id {} has been created",currentUsedCarId);
+        } else {
+            LOG.info("The car with id {} has been updated", usedCar.getId());
+            USED_CAR_ENTITIES.get(usedCar.getId()).setCar(usedCar);
+        }
+        return usedCar;
+
     }
 
     @Override
@@ -46,15 +53,9 @@ public class UsedCarMemoryDao implements UsedCarDao {
     }
 
     @Override
-    public void update(UsedCar usedCar, Long id) {
-        LOG.info("The car with id {} has been updated", id);
-        USED_CAR_ENTITIES.get(id).setCar(usedCar);
-    }
-
-    @Override
-    public void delete(Long id) {
-        LOG.info("The car with id {} has been deleted", id);
-        USED_CAR_ENTITIES.remove(id);
+    public void delete(UsedCar usedCar) {
+        LOG.info("The car with id {} has been deleted", usedCar.getId());
+        USED_CAR_ENTITIES.remove(usedCar.getId());
     }
 
     @Override
@@ -79,4 +80,5 @@ public class UsedCarMemoryDao implements UsedCarDao {
         }
         return currentUsedCardBrand;
     }
+
 }

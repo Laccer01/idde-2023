@@ -34,4 +34,8 @@ public class UsedCarCreationDto {
     @NotNull
     @Positive
     private Integer price;
+
+    @NotNull
+    private Integer usedCarOwnerId;
+
 }
