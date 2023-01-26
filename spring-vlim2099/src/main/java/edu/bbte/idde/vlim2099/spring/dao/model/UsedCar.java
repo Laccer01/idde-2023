@@ -35,7 +35,9 @@ public class UsedCar extends BaseEntity {
     @NotNull
     @Positive
     private Integer price;
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "used_car_owner_id", nullable = false)
     private UsedCarOwner usedCarOwner;
 
     public void setCar(UsedCar newUsedCar) {

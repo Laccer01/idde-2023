@@ -55,7 +55,10 @@ public class UsedCarOwnersController {
     public void update(@PathVariable("id") Long id, @RequestBody @Valid UsedCarOwnerCreationDto dto) {
         LOGGER.info("The used owner car with the id: {} have been updated successfully!", id);
         UsedCarOwner updateCarOwner = usedCarOwnerMapper.creationDtoToModel(dto);
+        UsedCarOwner owner = usedCarOwnerDao.getById(id);
+
         updateCarOwner.setId(id);
+        updateCarOwner.setUsedCars(owner.getUsedCars());
         usedCarOwnerDao.saveAndFlush(updateCarOwner);
     }
 
