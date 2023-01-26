@@ -30,7 +30,7 @@ public class UsedCarOwner extends BaseEntity {
     private String email;
     @NotNull
     private String address;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Collection<UsedCar> usedCars;
 
     public void setOwner(UsedCarOwner newUsedCarOwner) {
