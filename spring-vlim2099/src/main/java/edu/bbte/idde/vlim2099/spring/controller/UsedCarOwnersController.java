@@ -4,6 +4,7 @@ import edu.bbte.idde.vlim2099.spring.controller.dto.incoming.UsedCarOwnerCreatio
 import edu.bbte.idde.vlim2099.spring.controller.dto.outgoing.UsedCarOwnerResponseDto;
 import edu.bbte.idde.vlim2099.spring.controller.mapper.UsedCarOwnerMapper;
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarOwnerDao;
+import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -55,7 +56,10 @@ public class UsedCarOwnersController {
     public void update(@PathVariable("id") Long id, @RequestBody @Valid UsedCarOwnerCreationDto dto) {
         LOGGER.info("The used owner car with the id: {} have been updated successfully!", id);
         UsedCarOwner updateCarOwner = usedCarOwnerMapper.creationDtoToModel(dto);
+        UsedCarOwner owner = usedCarOwnerDao.getById(id);
+
         updateCarOwner.setId(id);
+        updateCarOwner.setUsedCars(owner.getUsedCars());
         usedCarOwnerDao.saveAndFlush(updateCarOwner);
     }
 
