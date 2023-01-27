@@ -97,7 +97,15 @@ public class UsedCarController {
     }
 
     @GetMapping("/allSearch")
-    public Collection<SearchUsedCar> findAllSearch(@PathVariable("id") Long id) {
+    public Collection<SearchUsedCar> findAllSearch() {
+        LOGGER.info("All the searches for the usedCar!");
+        return searchUsedCarDao.findAll();
+    }
+
+    //nincs megirva ido hiany miatt
+    @GetMapping("/allSearch/{date1}/{date2}")
+    public Collection<SearchUsedCar> findAllSearchByInterval(@PathVariable("date1") java.time.Instant date1,
+                                                             @PathVariable("date2") java.time.Instant date2) {
         LOGGER.info("All the searches for the usedCar!");
         return searchUsedCarDao.findAll();
     }

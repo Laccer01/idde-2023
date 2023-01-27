@@ -40,6 +40,7 @@ DROP table UsedCar;
 SELECT * FROM spring_used_car;
 SELECT * FROM spring_used_car_owner;
 SELECT * FROM spring_used_car_used_cars;
+SELECT * FROM spring_search_used_car;
 
 DROP table  spring_used_car;
 DROP table  spring_used_car_owner;
