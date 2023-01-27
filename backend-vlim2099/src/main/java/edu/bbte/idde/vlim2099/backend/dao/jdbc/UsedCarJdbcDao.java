@@ -27,7 +27,8 @@ public class UsedCarJdbcDao implements UsedCarDao {
                 set.getDouble("numberOfKm"),
                 set.getInt("yearOfManufacture"),
                 set.getString("chassisNumber"),
-                set.getInt("price"));
+                set.getInt("price"),
+                set.getInt("version"));
         currentCar.setId(set.getLong("usedCarID"));
         return currentCar;
     }
@@ -65,7 +66,7 @@ public class UsedCarJdbcDao implements UsedCarDao {
     public void create(UsedCar usedCar) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement prep = connection
-                    .prepareStatement("insert into UsedCar values(default, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    .prepareStatement("insert into UsedCar values(default, ?, ?, ?, ?, ?, ?, ?, ?, default)");
             prep = createPreparedStatement(prep, usedCar);
             prep.executeUpdate();
         } catch (SQLException e) {
@@ -98,9 +99,11 @@ public class UsedCarJdbcDao implements UsedCarDao {
                     .prepareStatement("Update UsedCar "
                             + "Set brand = ?, model = ?, engineSize = ?, horsePower = ?,"
                             + "numberOfKm = ?, yearOfManufacture = ?, chassisNumber = ?, price = ? "
+                            + ", version = ? "
                             + "where usedCarID = ?");
             prep = createPreparedStatement(prep, usedCar);
-            prep.setLong(9, id);
+            prep.setInt(9, usedCar.getVersion()+1);
+            prep.setLong(10, id);
             int set = prep.executeUpdate();
             LOGGER.error("Ennyi sor lett frissítve: {}", set);
 

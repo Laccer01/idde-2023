@@ -12,12 +12,12 @@ public class Main {
 
     public static void main(String[] args) {
         UsedCarDao usedCarDao = new UsedCarMemoryDao();
-        UsedCar firstCar = new UsedCar("audi", "A4", 1900.5, 120, 200000.12, 2016, "KNDPBCA25B7076883", 5000);
+        UsedCar firstCar = new UsedCar("audi", "A4", 1900.5, 120, 200000.12, 2016, "KNDPBCA25B7076883", 5000,1);
 
         usedCarDao.create(firstCar);
         LOG.info(firstCar.toString());
 
-        UsedCar secondCar = new UsedCar("bmw", "X5",2000.9, 190, 100800.12, 2012, "1FTEX1C85AFB83192", 4200);
+        UsedCar secondCar = new UsedCar("bmw", "X5",2000.9, 190, 100800.12, 2012, "1FTEX1C85AFB83192", 4200,1);
 
         usedCarDao.create(secondCar);
         LOG.info("Second car: {}", secondCar);
@@ -25,7 +25,7 @@ public class Main {
         LOG.info(usedCarDao.findById(firstCar.getId()).toString());
 
         UsedCar thirdCar = new UsedCar("wolksvagen", "passat cc",1800.9, 210, 10800.12,
-                2020, "JH4KA8162MC010197", 10200);
+                2020, "JH4KA8162MC010197", 10200,1);
         usedCarDao.create(thirdCar);
         usedCarDao.update(thirdCar, firstCar.getId());
         LOG.info("First car updated: {}", firstCar);

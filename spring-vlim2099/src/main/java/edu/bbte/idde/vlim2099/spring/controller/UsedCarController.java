@@ -3,8 +3,10 @@ package edu.bbte.idde.vlim2099.spring.controller;
 import edu.bbte.idde.vlim2099.spring.controller.dto.incoming.UsedCarCreationDto;
 import edu.bbte.idde.vlim2099.spring.controller.dto.outgoing.UsedCarResponseDto;
 import edu.bbte.idde.vlim2099.spring.controller.mapper.UsedCarMapper;
+import edu.bbte.idde.vlim2099.spring.dao.SearchUsedCarDao;
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarDao;
 import edu.bbte.idde.vlim2099.spring.dao.UsedCarOwnerDao;
+import edu.bbte.idde.vlim2099.spring.dao.model.SearchUsedCar;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCar;
 import edu.bbte.idde.vlim2099.spring.dao.model.UsedCarOwner;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.Collection;
 
 @RestController
@@ -22,6 +25,9 @@ public class UsedCarController {
 
     @Autowired
     private UsedCarOwnerDao usedCarOwnerDao;
+
+    @Autowired
+    private SearchUsedCarDao searchUsedCarDao;
 
     @Autowired
     private UsedCarMapper usedCarMapper;
@@ -35,10 +41,18 @@ public class UsedCarController {
             @RequestParam(value = "brand", required = false) String brand) {
         if (brand != null) {
             LOGGER.info("All used cars with brand: {} have been found!", brand);
+            SearchUsedCar searchUsedCar = new SearchUsedCar();
+            searchUsedCar.setDate(Instant.now());
+            searchUsedCar.setBrandName(brand);
+            searchUsedCarDao.saveAndFlush(searchUsedCar);
             return usedCarMapper.modelsToDtos(usedCarDao.findByBrand(brand));
         }
 
         LOGGER.info("All used cars have been found!");
+        SearchUsedCar searchUsedCar = new SearchUsedCar();
+        searchUsedCar.setDate(Instant.now());
+        searchUsedCar.setBrandName(null);
+        searchUsedCarDao.saveAndFlush(searchUsedCar);
         return usedCarMapper.modelsToDtos(usedCarDao.findAll());
     }
 
@@ -81,5 +95,12 @@ public class UsedCarController {
         UsedCar usedCar = usedCarDao.getById(usedCarId);
         usedCarDao.delete(usedCar);
     }
+
+    @GetMapping("/allSearch")
+    public Collection<SearchUsedCar> findAllSearch(@PathVariable("id") Long id) {
+        LOGGER.info("All the searches for the usedCar!");
+        return searchUsedCarDao.findAll();
+    }
+
 
 }

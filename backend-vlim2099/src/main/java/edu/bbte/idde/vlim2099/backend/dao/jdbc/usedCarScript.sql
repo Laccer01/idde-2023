@@ -12,6 +12,7 @@ CREATE TABLE UsedCar (
     yearOfManufacture int,
     chassisNumber varchar(200),
     price int,
+    version int default 1,
     PRIMARY KEY (usedCarID)
 );
 

@@ -32,6 +32,7 @@ public class UsedCarsServlet extends HttpServlet {
             resp.getWriter().println("Please fill all the properities of the car");
             return false;
         }
+
         return true;
     }
 
@@ -194,6 +195,7 @@ public class UsedCarsServlet extends HttpServlet {
                         resp.getWriter().println("Not found a car with the given id");
                         resp.sendError(404);
                     } else {
+                        usedCar.setVersion(idUsedCar.getVersion());
                         usedCarDao.update(usedCar, id);
                         resp.getWriter().println("The car was updated");
                     }

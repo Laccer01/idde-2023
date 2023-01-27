@@ -29,7 +29,7 @@ public class UsedCarOwnerJdbcDao implements UsedCarOwnerDao {
                 set.getString("gender"),
                 set.getString("email"),
                 set.getString("address"),
-                set.getInt("usedCarId"));
+                set.getInt("usedCarId"),1);
         usedCarOwner.setId(set.getLong("usedCarOwnerID"));
         return usedCarOwner;
     }

@@ -1,5 +1,6 @@
 package edu.bbte.idde.vlim2099.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 //Lombok a boiler kód generáláshoz
@@ -9,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor()
 
-public class    UsedCarOwner extends BaseEntity  {
+public class UsedCarOwner extends BaseEntity  {
     private String firstName;
     private String lastName;
     private java.sql.Date birthDay;
@@ -17,6 +18,8 @@ public class    UsedCarOwner extends BaseEntity  {
     private String email;
     private String address;
     private Integer usedCarId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer version;
 
     public void setOwner(UsedCarOwner newUsedCarOwner) {
         this.firstName = newUsedCarOwner.firstName;
@@ -26,5 +29,6 @@ public class    UsedCarOwner extends BaseEntity  {
         this.email = newUsedCarOwner.email;
         this.address = newUsedCarOwner.address;
         this.usedCarId = newUsedCarOwner.usedCarId;
+        this.version = newUsedCarOwner.version;
     }
 }

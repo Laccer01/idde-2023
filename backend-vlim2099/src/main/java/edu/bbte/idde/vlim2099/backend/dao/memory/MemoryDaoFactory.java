@@ -14,9 +14,9 @@ public class MemoryDaoFactory extends DaoFactory {
         if (daoUsedCar == null) {
             daoUsedCar = new UsedCarMemoryDao();
             daoUsedCar.create(new UsedCar("wolksvagen", "passat cc",1800.9, 210, 10800.12,
-                    2020, "JH4KA8162MC010197", 10200));
+                    2020, "JH4KA8162MC010197", 10200,1));
             daoUsedCar.create(new UsedCar("bmw", "X5",2000.9, 190, 100800.12,
-                    2012, "1FTEX1C85AFB83192", 4200));
+                    2012, "1FTEX1C85AFB83192", 4200,1));
         }
         return daoUsedCar;
     }

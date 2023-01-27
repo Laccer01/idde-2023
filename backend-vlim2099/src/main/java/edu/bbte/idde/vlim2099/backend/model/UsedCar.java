@@ -1,5 +1,6 @@
 package edu.bbte.idde.vlim2099.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 //Lombok a boiler kód generáláshoz
 
@@ -18,6 +19,8 @@ public class UsedCar extends BaseEntity {
     private Integer yearOfManufacture;
     private String chassisNumber;
     private Integer price;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer version;
 
     public void setCar(UsedCar newUsedCar) {
         this.brand = newUsedCar.brand;
@@ -28,6 +31,7 @@ public class UsedCar extends BaseEntity {
         this.yearOfManufacture = newUsedCar.yearOfManufacture;
         this.chassisNumber = newUsedCar.chassisNumber;
         this.price = newUsedCar.price;
+        this.version = newUsedCar.version;
     }
 
 }
